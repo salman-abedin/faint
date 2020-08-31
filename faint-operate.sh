@@ -1,9 +1,12 @@
 #!/bin/sh
+#
+# Helper script for faint. Allows misc operations on files
+# Dependencie: cat
 
 LIST=/tmp/list
 FILES=$(
    for file in "$@"; do
-      readlink -f "$file"
+      "${file#* }"
    done
 )
 
@@ -11,24 +14,24 @@ FILES=$(
 #                             Config
 #===============================================================================
 
-yank() { echo "$@" > $LIST; }
-trash() { mv "$@" ~/.local/share/Trash; }
+yank() { echo "$*" > $LIST; }
 
 OPS="\
-Trash:trash $FILES;
+Trash:mv $FILES $HOME/.local/share/Trash;
 Delete:rm -fr $FILES;
 Yank:yank $FILES;
-Paste:rsync -a $(cat $LIST) $PWD;
-Move:mv $(cat $LIST) $PWD;
-Soft Link:cp -frus $(cat $LIST) $PWD;
-Hard Link:cp -frul $(cat $LIST) $PWD;
+Paste:rsync -a $(cat $LIST) .;
+Duplicate:rsync -a $FILES $FILES~;
+Move:mv $(cat $LIST) .;
+Soft Link:cp -frus $(cat $LIST) .;
+Hard Link:cp -frul $(cat $LIST) .;
 "
+
+# Paste:rsync -a $(cat $LIST) $PWD;
 
 #===============================================================================
 #                             Script
 #===============================================================================
-
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up"
 
 get_config() {
    CURRENT_IFS=$IFS
@@ -46,5 +49,14 @@ get_config() {
    IFS=$CURRENT_IFS
 }
 
-CHOICE=$(get_config -o | fzf) && CMD=$(get_config -c "$CHOICE")
-$CMD 2> /dev/null
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up"
+
+CHOICE=$(get_config -o | fzf) &&
+   CMD=$(get_config -c "${CHOICE#* }") &&
+   $CMD 2> /dev/null
+
+#===============================================================================
+#                             Exp
+#===============================================================================
+
+# readlink -f "${file#* }"

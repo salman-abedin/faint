@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# A fuzzy file explorer
+#
+# Dpendencies: fzf, tmux, faint-list, faint-launch & faint-operate
+#
+# Usage: faint (launch on the current directory)
+#        faint -l (launch on the last visited directory)
+#        faint -d 3 (explore directories with specified depth)
+
+#===============================================================================
+#                             Config
+#===============================================================================
+
+#---------------------------------------
+#              Bindings
+#---------------------------------------
+KEY_LAUNCH=";"
+KEY_BACK=","
+KEY_SHELL="enter"
+KEY_OPERATE="space"
+
+#===============================================================================
+#                             Script
+#===============================================================================
+
+export DEPTH_PATH=/tmp/FAINT_DEPTH
+export LAST_PATH=~/.local/share/FAINT_LAST
+export FILTERS_PATH=~/.local/share/FAINT_FILTERS
+
+FZF_DEFAULT_OPTS="--reverse --border --no-info --cycle --margin 15%,30% --bind=\;:accept,]:jump-accept,esc:cancel --no-color --header ''"
+FZF_DEFAULT_OPTS="\
+   $FZF_DEFAULT_OPTS
+   -m
+   --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint -l)\"
+   --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
+   --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
+   --bind \"$KEY_SHELL:abort+execute(launch -s)\"
+   "
+export FZF_DEFAULT_OPT
+
+main() {
+   echo "${DEPTH:-1}" > $DEPTH_PATH
+   faint-list -e "${DEST:-$PWD}" | fzf
+}
+
+process_args() {
+   while :; do
+      case $1 in
+         -d) shift && DEPTH=$1 ;;
+         -l) read -r DEST < $LAST_PATH ;;
+         *) break ;;
+      esac
+      shift
+   done
+   [ "$1" ] && DEST=$1
+}
+
+process_args "$@"
+main

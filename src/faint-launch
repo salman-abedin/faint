@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Helper script for faint: launches files according to their mimetype
+#
+# Dependencies: file
+
+case $(file --mime-type "$1" -bL) in
+   text* | *x-empty | *json | *octet-stream)
+      tmux split-window -h "$EDITOR $1" \; \
+         swap-pane -d -t :.1 \; \
+         select-layout main-vertical
+      ;;
+   *)
+      return
+      ;;
+esac

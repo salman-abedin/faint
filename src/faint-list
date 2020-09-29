@@ -1,0 +1,102 @@
+#!/bin/sh
+#
+# Helper script for faint; lists file and formats the view
+#
+# Dependencie: find & cat
+
+#===============================================================================
+#                             Config
+#===============================================================================
+
+#---------------------------------------
+#              Filters
+#---------------------------------------
+FILTERS="\
+node_modules;
+package-lock.json;
+yarn.lock;
+.git;
+"
+
+#===============================================================================
+#                             Script
+#===============================================================================
+
+LAST_DIR=$(cat "$LAST_PATH")
+
+_get_filters() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $FILTERS; do
+      printf "%s" "$line"
+   done
+   IFS=$CURRENT_IFS
+}
+
+set_filters() {
+   [ -s "$FILTERS_PATH" ] ||
+      _get_filters |
+      awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > "$FILTERS_PATH"
+}
+
+format() {
+   while read -r file; do
+      [ "$file" = . ] && continue
+      if [ -d "$file" ]; then
+         PREFIX="📁"
+      else
+         EXT=${file##*.}
+         case $EXT in
+            iso | img) PREFIX="📀" ;;
+            png | ico) PREFIX="🖼" ;;
+            jpg | jpeg) PREFIX="📸" ;;
+            part) PREFIX="💔" ;;
+            json) PREFIX="📒" ;;
+            md) PREFIX="📘" ;;
+            tex) PREFIX="📜" ;;
+            css | sass | scss) PREFIX="🎨" ;;
+            html | pug) PREFIX="🌎" ;;
+            pdf | epub) PREFIX="📚" ;;
+            mp4 | mkv) PREFIX="🎥" ;;
+            *) PREFIX="📃" ;;
+         esac
+      fi
+      echo "$PREFIX ${file#./}"
+   done
+}
+
+list() {
+   echo "$PWD" > "$LAST_PATH"
+   find . -maxdepth "$(cat "$DEPTH_PATH")" \
+      ! -regex ".*\($(cat "$FILTERS_PATH")\).*" \
+      2> /dev/null
+}
+
+process_args() {
+   while :; do
+      case $1 in
+         -b)
+            cd "${LAST_DIR%/*}" || exit 1
+            ;;
+         -e) shift && cd "$1" || exit 1 ;;
+         -l)
+            shift
+            # NEW_DIR=$(echo "$1" | sed 's/\W //')
+            NEW_DIR=${1#* }
+            DEST=$LAST_DIR/$NEW_DIR
+            if ! cd "$DEST"; then
+               faint-launch "$DEST" || launch -f "$DEST"
+               cd "${DEST%/*}" || exit 1
+            fi
+            ;;
+         *) break ;;
+      esac
+      shift
+   done
+}
+
+process_args "$@"
+set_filters
+list | format

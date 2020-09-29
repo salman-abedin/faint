@@ -6,7 +6,7 @@
 LIST=/tmp/list
 FILES=$(
    for file in "$@"; do
-      "${file#* }"
+      readlink -f "${file#* }"
    done
 )
 
@@ -14,7 +14,10 @@ FILES=$(
 #                             Config
 #===============================================================================
 
-yank() { echo "$*" > $LIST; }
+yank() {
+   echo "$*" | xsel -b
+   echo "$*" > $LIST
+}
 
 OPS="\
 Trash:mv $FILES $HOME/.local/share/Trash;

@@ -15,8 +15,7 @@ FZF_DEFAULT_OPTS="\
    "
 
 export FZF_DEFAULT_OPT
-# faint-list -l "${1:-$PWD}" | fzf
-faint-list "${1:-$PWD}" | fzf
+faint-list -l "${1:-$PWD}" | fzf
 
 : > $MAX_DEPTH_PATH
 

@@ -79,8 +79,9 @@ while :; do
       -d) shift && echo "$1" > $DEPTH_PATH ;;
       -b | -l)
          shift
-         # ns "$(dirname "$(readlink -f "${1#* }")")"
          DIR=$(echo "$1" | sed 's/\W //')
+         PATH=$(readlink -f "$DIR")
+         # ns "$PATH"
          [ "$1" = -b ] && DIR=${DIR%%/*}
          cd "$DIR" || {
             launch -f "$DIR"
@@ -93,5 +94,4 @@ while :; do
 done
 
 [ -s "$DEPTH_PATH" ] || echo "$DEPTH" > $DEPTH_PATH
-
 list | format

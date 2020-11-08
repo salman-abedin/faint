@@ -25,6 +25,8 @@ yarn.lock;
 
 DEPTH_PATH=/tmp/FAINT_DEPTH
 FILTERS_PATH=/tmp/FAINT_FILTERS
+LAST_PATH=/tmp/FAINT_LAST
+LAST_DIR=
 
 _get_filters() {
    CURRENT_IFS=$IFS
@@ -63,35 +65,40 @@ format() {
 }
 
 list() {
+   echo "$PWD" > $LAST_PATH
    find . -maxdepth "$(cat $DEPTH_PATH)" \
       ! -regex ".*\($(cat $FILTERS_PATH)\).*" \
       2> /dev/null
+
 }
 
-[ -s $FILTERS_PATH ] ||
-   _get_filters |
-   awk '{printf "%s\\|",$0;}' |
-      sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-         > $FILTERS_PATH
+init() {
+   read -r LAST_DIR < $LAST_PATH
+   [ -s $DEPTH_PATH ] || echo "$DEPTH" > $DEPTH_PATH
+   [ -s $FILTERS_PATH ] ||
+      _get_filters |
+      awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > $FILTERS_PATH
+}
 
+init
 while :; do
    case $1 in
+      -b) cd "${LAST_DIR%/*}" || exit ;;
       -d) shift && echo "$1" > $DEPTH_PATH ;;
-      -b | -l)
+      -e) shift && cd "$1" || exit ;;
+      -l)
          shift
-         DIR=$(echo "$1" | sed 's/\W //')
-         PATH=$(readlink -f "$DIR")
-         # ns "$PATH"
-         [ "$1" = -b ] && DIR=${DIR%%/*}
-         cd "$DIR" || {
-            launch -f "$DIR"
-            exit 0
-         }
+         NEW_DIR=$(echo "$1" | sed 's/\W //')
+         DEST=$LAST_DIR/$NEW_DIR
+         if ! cd "$DEST"; then
+            mux "$DEST"
+            cd "${DEST%/*}" || exit
+         fi
          ;;
       *) break ;;
    esac
    shift
 done
-
-[ -s "$DEPTH_PATH" ] || echo "$DEPTH" > $DEPTH_PATH
 list | format

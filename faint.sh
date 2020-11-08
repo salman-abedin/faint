@@ -5,19 +5,17 @@
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
 
-MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH
-
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    -m
    --bind 'space:abort+execute(faint-operate {+})+execute(faint)'
    --bind ';:reload(faint-list -l {})+clear-query'
+   --bind ';:reload(faint-list -l {})+clear-query'
+   --bind \"':reload(faint-list -b)+clear-query\"
    "
 
 export FZF_DEFAULT_OPT
-faint-list -l "${1:-$PWD}" | fzf
-
-: > $MAX_DEPTH_PATH
+faint-list -e "${1:-$PWD}" | fzf
 
 #===============================================================================
 #                             Exp
@@ -33,8 +31,8 @@ faint-list -l "${1:-$PWD}" | fzf
 # case $1 in
 #    # -l) read -r dir < $LAST_PATH && dir=${dir%/*} ;;
 #    -l) read -r dir < $LAST_PATH ;;
-#    -d) echo "$2" > $MAX_DEPTH_PATH ;;
-#    *) dir=${1:-$PWD} && echo 3 > $MAX_DEPTH_PATH ;;
+#    -d) echo "$2" > $DEPTH_PATH_PATH ;;
+#    *) dir=${1:-$PWD} && echo 3 > $DEPTH_PATH_PATH ;;
 # esac
 
 # trap 'mode=choose' RTMIN+1

@@ -9,7 +9,7 @@
 #                             Config
 #===============================================================================
 
-DEPTH=1
+DEPTH=3
 
 # List of files & directories to ignore
 FILTERS="\
@@ -86,7 +86,6 @@ init
 while :; do
    case $1 in
       -b) cd "${LAST_DIR%/*}" || exit ;;
-      -d) shift && echo "$1" > $DEPTH_PATH ;;
       -e) shift && cd "$1" || exit ;;
       -l)
          shift

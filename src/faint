@@ -5,17 +5,29 @@
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
 
+DEPTH_PATH=/tmp/FAINT_DEPTH
+LAST_PATH=/tmp/FAINT_LAST
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    -m
    --bind 'space:abort+execute(faint-operate {+})+execute(faint)'
    --bind ';:reload(faint-list -l {})+clear-query'
    --bind ';:reload(faint-list -l {})+clear-query'
-   --bind \"':reload(faint-list -b)+clear-query\"
+   --bind \",:reload(faint-list -b)+clear-query\"
    "
-
 export FZF_DEFAULT_OPT
-faint-list -e "${1:-$PWD}" | fzf
+DEPTH=3
+
+while :; do
+   case $1 in
+      -d) shift && echo "${1:-$DEPTH}" > $DEPTH_PATH ;;
+      -l) shift && echo "${1:-$DEPTH}" > $DEPTH_PATH ;;
+      *) break ;;
+   esac
+   shift
+done
+
+faint-list "$DEST" | fzf
 
 #===============================================================================
 #                             Exp

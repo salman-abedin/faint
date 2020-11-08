@@ -9,12 +9,13 @@
 #                             Config
 #===============================================================================
 
-MAX_DEPTH=1
+DEPTH=1
 
 # List of files & directories to ignore
 FILTERS="\
 node_modules;
 package-lock.json;
+yarn.lock;
 .git;
 "
 
@@ -22,7 +23,7 @@ package-lock.json;
 #                             Script
 #===============================================================================
 
-MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH
+DEPTH_PATH=/tmp/FAINT_DEPTH
 FILTERS_PATH=/tmp/FAINT_FILTERS
 
 _get_filters() {
@@ -32,12 +33,6 @@ _get_filters() {
       printf "%s" "$line"
    done
    IFS=$CURRENT_IFS
-}
-
-list() {
-   find . -maxdepth "$(cat $MAX_DEPTH_PATH)" \
-      ! -regex ".*\($(cat $FILTERS_PATH)\).*" \
-      2> /dev/null
 }
 
 format() {
@@ -67,12 +62,21 @@ format() {
    done
 }
 
+list() {
+   find . -maxdepth "$(cat $DEPTH_PATH)" \
+      ! -regex ".*\($(cat $FILTERS_PATH)\).*" \
+      2> /dev/null
+}
+
 [ -s $FILTERS_PATH ] ||
-   _get_filters | awk '{printf "%s\\|",$0;}' | sed -e 's/|\./|\\./g' -e 's/\\|$//g' > $FILTERS_PATH
+   _get_filters |
+   awk '{printf "%s\\|",$0;}' |
+      sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+         > $FILTERS_PATH
 
 while :; do
    case $1 in
-      -d) shift && echo "$1" > $MAX_DEPTH_PATH ;;
+      -d) shift && echo "$1" > $DEPTH_PATH ;;
       -b | -l)
          shift
          # ns "$(dirname "$(readlink -f "${1#* }")")"
@@ -88,6 +92,6 @@ while :; do
    shift
 done
 
-[ -s $MAX_DEPTH_PATH ] || echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
+[ -s "$DEPTH_PATH" ] || echo "$DEPTH" > $DEPTH_PATH
 
 list | format

@@ -4,30 +4,37 @@
 # Dpendencies: fzf, tmux, launch & faint-operate
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
+#        faint -d 3 (explore directories with specified depth)
 
-DEPTH_PATH=/tmp/FAINT_DEPTH
-LAST_PATH=/tmp/FAINT_LAST
+export DEPTH_PATH=/tmp/FAINT_DEPTH
+export LAST_PATH=/tmp/FAINT_LAST
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    -m
    --bind 'space:abort+execute(faint-operate {+})+execute(faint)'
    --bind ';:reload(faint-list -l {})+clear-query'
-   --bind ';:reload(faint-list -l {})+clear-query'
    --bind \",:reload(faint-list -b)+clear-query\"
    "
 export FZF_DEFAULT_OPT
-DEPTH=3
 
-while :; do
-   case $1 in
-      -d) shift && echo "${1:-$DEPTH}" > $DEPTH_PATH ;;
-      -l) shift && echo "${1:-$DEPTH}" > $DEPTH_PATH ;;
-      *) break ;;
-   esac
-   shift
-done
+main() {
+   echo "${DEPTH:-1}" > $DEPTH_PATH
+   faint-list "${DEST:-$PWD}" | fzf
+}
 
-faint-list "$DEST" | fzf
+process_args() {
+   while :; do
+      case $1 in
+         -d) shift && DEPTH=$1 ;;
+         -l) read -r DEST < $LAST_PATH ;;
+         *) break ;;
+      esac
+      shift
+   done
+   [ "$1" ] && DEST=$1
+}
+process_args "$@"
+main
 
 #===============================================================================
 #                             Exp

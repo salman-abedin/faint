@@ -82,22 +82,26 @@ init() {
             > $FILTERS_PATH
 }
 
+process_args() {
+   while :; do
+      case $1 in
+         -b) cd "${LAST_DIR%/*}" || exit ;;
+         -e) shift && cd "$1" || exit ;;
+         -l)
+            shift
+            NEW_DIR=$(echo "$1" | sed 's/\W //')
+            DEST=$LAST_DIR/$NEW_DIR
+            if ! cd "$DEST"; then
+               mux "$DEST"
+               cd "${DEST%/*}" || exit
+            fi
+            ;;
+         *) break ;;
+      esac
+      shift
+   done
+}
+
+process_args "$@"
 init
-while :; do
-   case $1 in
-      -b) cd "${LAST_DIR%/*}" || exit ;;
-      -e) shift && cd "$1" || exit ;;
-      -l)
-         shift
-         NEW_DIR=$(echo "$1" | sed 's/\W //')
-         DEST=$LAST_DIR/$NEW_DIR
-         if ! cd "$DEST"; then
-            mux "$DEST"
-            cd "${DEST%/*}" || exit
-         fi
-         ;;
-      *) break ;;
-   esac
-   shift
-done
 list | format

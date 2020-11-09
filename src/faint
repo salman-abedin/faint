@@ -19,7 +19,7 @@ export FZF_DEFAULT_OPT
 
 main() {
    echo "${DEPTH:-1}" > $DEPTH_PATH
-   faint-list "${DEST:-$PWD}" | fzf
+   faint-list -e "${DEST:-$PWD}" | fzf
 }
 
 process_args() {

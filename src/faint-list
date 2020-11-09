@@ -26,7 +26,7 @@ yarn.lock;
 DEPTH_PATH=/tmp/FAINT_DEPTH
 FILTERS_PATH=/tmp/FAINT_FILTERS
 LAST_PATH=/tmp/FAINT_LAST
-LAST_DIR=
+LAST_DIR=$(cat $LAST_PATH)
 
 _get_filters() {
    CURRENT_IFS=$IFS
@@ -73,7 +73,6 @@ list() {
 }
 
 init() {
-   read -r LAST_DIR < $LAST_PATH
    [ -s $DEPTH_PATH ] || echo "$DEPTH" > $DEPTH_PATH
    [ -s $FILTERS_PATH ] ||
       _get_filters |
@@ -85,7 +84,9 @@ init() {
 process_args() {
    while :; do
       case $1 in
-         -b) cd "${LAST_DIR%/*}" || exit ;;
+         -b)
+            cd "${LAST_DIR%/*}" || exit
+            ;;
          -e) shift && cd "$1" || exit ;;
          -l)
             shift

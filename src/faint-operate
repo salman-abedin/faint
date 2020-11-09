@@ -3,12 +3,13 @@
 # Helper script for faint. Allows misc operations on files
 # Dependencie: cat
 
-LIST=/tmp/list
+export LIST=/tmp/list
 FILES=$(
    for file in "$@"; do
       readlink -f "${file#* }"
    done
 )
+export FILES
 
 #===============================================================================
 #                             Config
@@ -19,7 +20,7 @@ yank() {
    echo "$*" > $LIST
 }
 
-OPS="\
+OPS='\
 Trash:mv $FILES $HOME/.local/share/Trash;
 Delete:rm -fr $FILES;
 Yank:yank $FILES;
@@ -28,7 +29,7 @@ Duplicate:rsync -a $FILES $FILES~;
 Move:mv $(cat $LIST) .;
 Soft Link:cp -frus $(cat $LIST) .;
 Hard Link:cp -frul $(cat $LIST) .;
-"
+'
 
 # Paste:rsync -a $(cat $LIST) $PWD;
 

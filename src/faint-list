@@ -51,7 +51,10 @@ process_args() {
             shift
             NEW_DIR=$(echo "$1" | sed 's/\W //')
             DEST=$LAST_DIR/$NEW_DIR
-            cd "$DEST" || mux "$DEST"
+            if ! cd "$DEST"; then
+               mux "$DEST"
+               cd "${DEST%/*}" || exit 1
+            fi
             ;;
          *) break ;;
       esac

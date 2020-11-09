@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # Helper script for faint. Allows misc operations on files
+#
 # Dependencie: cat
 
 export LIST=/tmp/list
@@ -20,8 +21,8 @@ yank() {
    echo "$*" > $LIST
 }
 
-OPS='\
-Trash:mv $FILES $HOME/.local/share/Trash;
+# OPS='Trash:mv $FILES $HOME/.local/share/Trash;
+OPS='Trash:ns yo;
 Delete:rm -fr $FILES;
 Yank:yank $FILES;
 Paste:rsync -a $(cat $LIST) .;
@@ -57,7 +58,8 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up"
 
 CHOICE=$(get_config -o | fzf) &&
    CMD=$(get_config -c "${CHOICE#* }") &&
-   $CMD 2> /dev/null
+   ns "$CMD"
+# $CMD 2> /dev/null
 
 #===============================================================================
 #                             Exp

@@ -40,7 +40,7 @@ export FILTERS_PATH=~/.local/share/FAINT_FILTERS
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    -m
-   --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint)\"
+   --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint -l)\"
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_SHELL:abort+execute(launch -s)\"

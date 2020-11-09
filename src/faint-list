@@ -1,14 +1,14 @@
 #!/bin/sh
 #
 # Helper script for faint; lists file and formats the view
-# Dependencie: cat
+#
+# Dependencie: find, sed & cat
 
 LAST_DIR=$(cat "$LAST_PATH")
 
 format() {
    while read -r file; do
       [ "$file" = . ] && continue
-
       if [ -d "$file" ]; then
          PREFIX="📁"
       else
@@ -21,8 +21,8 @@ format() {
             json) PREFIX="📒" ;;
             md) PREFIX="📘" ;;
             tex) PREFIX="📜" ;;
-            css) PREFIX="🎨" ;;
-            html) PREFIX="🌎" ;;
+            css | sass | scss) PREFIX="🎨" ;;
+            html | pug) PREFIX="🌎" ;;
             pdf | epub) PREFIX="📚" ;;
             mp4 | mkv) PREFIX="🎥" ;;
             *) PREFIX="📃" ;;
@@ -37,7 +37,6 @@ list() {
    find . -maxdepth "$(cat "$DEPTH_PATH")" \
       ! -regex ".*\($(cat "$FILTERS_PATH")\).*" \
       2> /dev/null
-
 }
 
 process_args() {

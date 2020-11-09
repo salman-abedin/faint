@@ -3,39 +3,7 @@
 # Helper script for faint; lists file and formats the view
 # Dependencie: cat
 
-# List of files & directories to ignore
-
-#===============================================================================
-#                             Config
-#===============================================================================
-
-DEPTH=3
-
-# List of files & directories to ignore
-FILTERS="\
-node_modules;
-package-lock.json;
-yarn.lock;
-.git;
-"
-
-#===============================================================================
-#                             Script
-#===============================================================================
-
-DEPTH_PATH=/tmp/FAINT_DEPTH
-FILTERS_PATH=/tmp/FAINT_FILTERS
-LAST_PATH=/tmp/FAINT_LAST
-LAST_DIR=$(cat $LAST_PATH)
-
-_get_filters() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $FILTERS; do
-      printf "%s" "$line"
-   done
-   IFS=$CURRENT_IFS
-}
+LAST_DIR=$(cat "$LAST_PATH")
 
 format() {
    while read -r file; do
@@ -65,37 +33,25 @@ format() {
 }
 
 list() {
-   echo "$PWD" > $LAST_PATH
-   find . -maxdepth "$(cat $DEPTH_PATH)" \
-      ! -regex ".*\($(cat $FILTERS_PATH)\).*" \
+   echo "$PWD" > "$LAST_PATH"
+   find . -maxdepth "$(cat "$DEPTH_PATH")" \
+      ! -regex ".*\($(cat "$FILTERS_PATH")\).*" \
       2> /dev/null
 
-}
-
-init() {
-   [ -s $DEPTH_PATH ] || echo "$DEPTH" > $DEPTH_PATH
-   [ -s $FILTERS_PATH ] ||
-      _get_filters |
-      awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > $FILTERS_PATH
 }
 
 process_args() {
    while :; do
       case $1 in
          -b)
-            cd "${LAST_DIR%/*}" || exit
+            cd "${LAST_DIR%/*}" || exit 1
             ;;
-         -e) shift && cd "$1" || exit ;;
+         -e) shift && cd "$1" || exit 1 ;;
          -l)
             shift
             NEW_DIR=$(echo "$1" | sed 's/\W //')
             DEST=$LAST_DIR/$NEW_DIR
-            if ! cd "$DEST"; then
-               mux "$DEST"
-               cd "${DEST%/*}" || exit
-            fi
+            cd "$DEST" || mux "$DEST"
             ;;
          *) break ;;
       esac
@@ -104,5 +60,4 @@ process_args() {
 }
 
 process_args "$@"
-init
 list | format

@@ -22,7 +22,7 @@ faint is a fuzzy finding file explorer with scriptable operations & launch behav
 
 ## Dependencies
 
--  fzf, tmux, find, sed, awk, file, & cat
+-  `fzf, tmux, find, sed, awk, file, & cat`
 
 ## Installation
 
@@ -32,7 +32,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ## Usage
 
--  consult the config section on the script for your preferred settings
+-  consult the config section of the relevant scripts for your preferred settings
 
 ## Update
 

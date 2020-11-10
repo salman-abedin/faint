@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Helper script for faint: launches files according to their mimetype
+#
+# Dependencies: file
 
 case $(file --mime-type "$1" -bL) in
    text* | *x-empty | *json | *octet-stream)

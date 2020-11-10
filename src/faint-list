@@ -4,7 +4,42 @@
 #
 # Dependencie: find & cat
 
+#===============================================================================
+#                             Config
+#===============================================================================
+
+#---------------------------------------
+#              Filters
+#---------------------------------------
+FILTERS="\
+node_modules;
+package-lock.json;
+yarn.lock;
+.git;
+"
+
+#===============================================================================
+#                             Script
+#===============================================================================
+
 LAST_DIR=$(cat "$LAST_PATH")
+
+_get_filters() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $FILTERS; do
+      printf "%s" "$line"
+   done
+   IFS=$CURRENT_IFS
+}
+
+set_filters() {
+   [ -s "$FILTERS_PATH" ] ||
+      _get_filters |
+      awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > "$FILTERS_PATH"
+}
 
 format() {
    while read -r file; do
@@ -52,7 +87,7 @@ process_args() {
             NEW_DIR=${1#* }
             DEST=$LAST_DIR/$NEW_DIR
             if ! cd "$DEST"; then
-               faint-launch "$DEST"
+               faint-launch "$DEST" || launch -f "$DEST"
                cd "${DEST%/*}" || exit 1
             fi
             ;;
@@ -63,4 +98,5 @@ process_args() {
 }
 
 process_args "$@"
+set_filters
 list | format

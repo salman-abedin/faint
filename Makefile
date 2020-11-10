@@ -12,4 +12,6 @@ uninstall:
 		rm -f $(BIN_DIR)/$${script#src/}; \
 		done
 	@echo Done removing executable files.
-.PHONY: install uninstall
+clean:
+	@rm ~/.local/share/FAINT_FILTERS
+.PHONY: install uninstall clean

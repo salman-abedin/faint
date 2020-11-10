@@ -2,13 +2,27 @@
 
 faint is a fuzzy finding file explorer with scriptable operations & launch behaviors
 
-# Dependencies
+## Features
+
+-  Fuzzy Finding & Depth Searching
+-  Back & Forth Navigation
+-  Scriptable Operations
+-  Scriptable Launch Behaviors
+-  Filtering & Emojis
+
+## Dependencies
+
+-  fzf, tmux, find, sed, awk, file, & cat
 
 ## Installation
 
 ```sh
 git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make install
 ```
+
+## Usage
+
+-  consult the config section on the script for your preferred settings
 
 ## Update
 

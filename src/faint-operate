@@ -4,41 +4,9 @@
 #
 # Dependencie: cat
 
-#===============================================================================
-#                             Config
-#===============================================================================
+. faint-config
 
-#---------------------------------------
-#              Operation Functions
-#---------------------------------------
-delete() { rm -fr "$FILES"; }
-trash() { rsync -a "$FILES" "$TRASH" && delete; }
-yank() { echo "$FILES" | xsel -b && echo "$FILES" > "$LIST"; }
-paste() { rsync -a "$(cat "$LIST")" .; }
-duplicate() { rsync -a "$FILES" "$FILES~"; }
-move() { mv "$(cat "$LIST")" .; }
-link_soft() { cp -frus "$(cat "$LIST")" .; }
-link_hard() { cp -frul "$(cat "$LIST")" .; }
-
-#---------------------------------------
-# <OPERATION_NAME>:<OPERATION_FUNCTION>
-#---------------------------------------
-OPS="\
-❌ Delete:delete;
-⚔ Trash:trash;
-© Yank:yank;
-🖌 Paste:paste;
-🚚 Move:move;
-‼ Duplicate:duplicate;
-🗞 Soft Link:link_soft;
-🌴 Hard Link:link_hard;
-"
-
-#===============================================================================
-#                             Script
-#===============================================================================
-
-LIST=/tmp/list
+LIST=/tmp/FAINT_FILE_LIST
 FILES=$(
    for file in "$@"; do
       read -r LAST_DIR < "$LAST_PATH"

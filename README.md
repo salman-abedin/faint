@@ -22,7 +22,7 @@
 
 ## Dependencies
 
--  `fzf, tmux, find, sed, awk, file, & cat`
+-  `fzf, find, sed, awk, file, & cat`
 
 ## Installation
 

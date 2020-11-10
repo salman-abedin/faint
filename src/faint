@@ -9,22 +9,7 @@
 #        faint -d 3 (explore directories with specified depth)
 #        faint <PATH> (explore certain directories)
 
-#===============================================================================
-#                             Config
-#===============================================================================
-
-#---------------------------------------
-#              Bindings
-#---------------------------------------
-KEY_LAUNCH=";"
-KEY_BACK=","
-KEY_OPERATE="space"
-KEY_QUIT="esc"
-KEY_SHELL="enter"
-
-#===============================================================================
-#                             Script
-#===============================================================================
+. faint-config
 
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=~/.local/share/FAINT_LAST

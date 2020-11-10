@@ -43,7 +43,7 @@ FZF_DEFAULT_OPTS="\
 export FZF_DEFAULT_OPT
 
 change_root() {
-   cd $(cat $LAST_PATH)
+   cd "$(cat $LAST_PATH)" || exit 1
    $SHELL
 }
 

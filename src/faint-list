@@ -6,6 +6,8 @@
 
 . faint-config
 
+FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
+
 #---------------------------------------
 #              Icons
 #---------------------------------------

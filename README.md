@@ -55,7 +55,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 ### Modifications
 
 -  Consult the `faint-config` script for all your modifications need
--  **Reinstall** after making changes to the scripts
+-  **Reinstall** after making changes
 
 ## Update
 

@@ -4,7 +4,7 @@
 
 ## Features
 
--  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation
+-  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation.
 
 ![](demo/navigation.gif)
 
@@ -51,6 +51,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `space` | Pops open the operations menu for the selected files |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
+
+### Modifications
 
 -  Consult the **Config** section of the relevant scripts for your preferred settings
 -  **Reinstall** after making changes to the scripts

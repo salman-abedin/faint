@@ -1,6 +1,7 @@
 .POSIX:
 BIN_DIR = /usr/local/bin
 install:
+	@rm -f ~/.local/share/FAINT_FILTERS
 	@mkdir -p $(BIN_DIR)
 	@for script in src/*; do \
 		cp -f $$script $(BIN_DIR); \
@@ -12,6 +13,4 @@ uninstall:
 		rm -f $(BIN_DIR)/$${script#src/}; \
 		done
 	@echo Done removing executable files.
-clean:
-	@rm ~/.local/share/FAINT_FILTERS
 .PHONY: install uninstall clean

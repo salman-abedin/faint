@@ -8,7 +8,7 @@
 #                             Config
 #===============================================================================
 
-trash() { rm -fr "$FILES"; }
+trash() { notify-send trashing; }
 delete() { rm -fr "$FILES"; }
 yank() { echo "$FILES" | xsel -b && echo "$FILES" > "$LIST"; }
 paste() { rsync -a "$(cat "$LIST")" .; }

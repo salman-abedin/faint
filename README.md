@@ -4,11 +4,21 @@ faint is a fuzzy finding file explorer with scriptable operations & launch behav
 
 ## Features
 
--  Fuzzy Finding & Depth Searching
--  Back & Forth Navigation
--  Scriptable Operations
+-  Fuzzy Finding, Depth Searching & Forward-Backward Navigation
+
+![](demo/navigation.gif)
+
 -  Scriptable Launch Behaviors
+
+![](demo/launching.gif)
+
+-  Scriptable Operations
+
+![](demo/operations.gif)
+
 -  Filtering & Emojis
+
+![](demo/filtering.gif)
 
 ## Dependencies
 

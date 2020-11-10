@@ -1,6 +1,6 @@
 # faint: Extensible TUI fuzzy file explorer
 
-**faint** is a TUI fuzzy file explorer with scriptable operations & launch behaviors
+**faint** is a fuzzy file explorer for the CLI with scriptable operations & launch behaviors
 
 ## Features
 
@@ -51,11 +51,13 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `space` | Pops open the operations menu for the selected files |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
+| `tab`   | Mark files                                           |
+| `btab`  | Unmark files                                         |
 
 ### Modifications
 
 -  Consult the `faint-config` script for all your modifications need
--  **Reinstall** after making changes to the scripts
+-  **Reinstall** after making changes
 
 ## Update
 

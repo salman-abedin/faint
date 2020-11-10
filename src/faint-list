@@ -2,9 +2,11 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find
+# Dependencie: find, awk, sed & faint-config
 
 . faint-config
+
+FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
 
 #---------------------------------------
 #              Icons

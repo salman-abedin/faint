@@ -2,18 +2,27 @@
 #
 # Helper script for faint. Allows misc operations on files
 #
-# Dependencie: cat
+# Dependencies: fzf & faint-config
 
 . faint-config
 
-LIST=/tmp/FAINT_FILE_LIST
-FILES=$(
+FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
+
+read -r LAST_DIR < "$LAST_PATH"
+read -r FILE_LIST < "$FILE_LIST_PATH"
+
+FILE_ARGS=$(
+   read -r LAST_DIR < "$LAST_PATH"
    for file in "$@"; do
-      read -r LAST_DIR < "$LAST_PATH"
       echo "$LAST_DIR/${file#* }"
    done
 )
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up,\;:accept"
+
+export FZF_DEFAULT_OPTS="\
+   $FZF_DEFAULT_OPTS
+   --bind=tab:down,btab:up
+   --bind \"$KEY_LAUNCH:accept\"
+   "
 
 get_config() {
    CURRENT_IFS=$IFS

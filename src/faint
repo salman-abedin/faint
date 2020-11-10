@@ -2,7 +2,7 @@
 #
 # A fuzzy file explorer
 #
-# Dpendencies: fzf, faint-list, faint-launch, faint-operate
+# Dpendencies: fzf, faint-config, faint-list, faint-launch & faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -12,12 +12,11 @@
 . faint-config
 
 export DEPTH_PATH=/tmp/FAINT_DEPTH
-export LAST_PATH=~/.local/share/FAINT_LAST
-export FILTERS_PATH=~/.local/share/FAINT_FILTERS
+export LAST_PATH=~/.local/share/faint/FAINT_LAST
 
-FZF_DEFAULT_OPTS="--reverse --border --no-info --cycle --margin 15%,30% --no-color --header ''"
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
+   --reverse --border --no-info --cycle --margin 15%,30% --no-color --header ''
    -m
    --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint -l)\"
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
@@ -31,6 +30,11 @@ change_root() {
    read -r LAST_DIR < "$LAST_PATH"
    cd "$LAST_DIR" || exit 1
    $SHELL
+}
+
+init() {
+   echo "${DEPTH:-1}" > $DEPTH_PATH
+   [ -d ~/.local/share/faint ] || mkdir -p ~/.local/share/faint
 }
 
 process_args() {
@@ -47,11 +51,8 @@ process_args() {
 
 main() {
    process_args "$@"
-   echo "${DEPTH:-1}" > $DEPTH_PATH
-
+   init
    trap 'change_root' RTMIN+1
-
    faint-list -e "${DEST:-$PWD}" | fzf
 }
-
 main "$@"

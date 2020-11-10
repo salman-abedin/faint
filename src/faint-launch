@@ -5,10 +5,6 @@
 # Dependencies: file
 
 case $(file --mime-type "$1" -bL) in
-   #---------------------------------------
-   #              Config
-   #---------------------------------------
-
    # Check for the mimetype of your file (This is POSIX regex)
    video* | audio* | *gif)
       # Launch using your preferred command

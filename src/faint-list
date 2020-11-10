@@ -2,7 +2,7 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find & cat
+# Dependencie: find
 
 #===============================================================================
 #                             Config
@@ -76,13 +76,15 @@ set_filters() {
 
 list() {
    echo "$PWD" > "$LAST_PATH"
-   find . -maxdepth "$(cat "$DEPTH_PATH")" \
-      ! -regex ".*\($(cat "$FILTERS_PATH")\).*" \
+   read -r DEPTH < "$DEPTH_PATH"
+   read -r FILTERS < "$FILTERS_PATH"
+   find . -maxdepth "$DEPTH" \
+      ! -regex ".*\($FILTERS\).*" \
       2> /dev/null
 }
 
 process_args() {
-   LAST_DIR=$(cat "$LAST_PATH")
+   read -r LAST_DIR < "$LAST_PATH"
    while :; do
       case $1 in
          -b)

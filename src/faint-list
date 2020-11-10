@@ -2,63 +2,9 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, awk, sed & faint-config
+# Dependencie: find & faint-config
 
 . faint-config
-
-FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
-
-#---------------------------------------
-#              Icons
-#---------------------------------------
-format() {
-   while read -r file; do
-      [ "$file" = . ] && continue
-      if [ -d "$file" ]; then
-         #---------------------------------------
-         #              Folder Icon
-         #---------------------------------------
-         PREFIX="📁"
-      else
-         EXT=${file##*.}
-         #---------------------------------------
-         #              File Icons
-         #---------------------------------------
-         case $EXT in
-            iso | img) PREFIX="📀" ;;
-            png | ico) PREFIX="🖼" ;;
-            jpg | jpeg) PREFIX="📸" ;;
-            part) PREFIX="💔" ;;
-            json) PREFIX="📒" ;;
-            md) PREFIX="📘" ;;
-            tex) PREFIX="📜" ;;
-            css | sass | scss) PREFIX="🎨" ;;
-            html | pug) PREFIX="🌎" ;;
-            pdf | epub) PREFIX="📚" ;;
-            mp4 | mkv) PREFIX="🎥" ;;
-            *) PREFIX="📃" ;;
-         esac
-      fi
-      echo "$PREFIX ${file#./}"
-   done
-}
-
-_get_filters() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $FILTERS; do
-      printf "%s" "$line"
-   done
-   IFS=$CURRENT_IFS
-}
-
-set_filters() {
-   [ -s "$FILTERS_PATH" ] ||
-      _get_filters |
-      awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > "$FILTERS_PATH"
-}
 
 list() {
    echo "$PWD" > "$LAST_PATH"
@@ -82,7 +28,7 @@ process_args() {
             NEW_DIR=${1#* }
             DEST=$LAST_DIR/$NEW_DIR
             if ! cd "$DEST"; then
-               faint-launch "$DEST" || launch -f "$DEST"
+               faint_launch "$DEST"
                cd "$LAST_DIR" || exit 1
             fi
             ;;
@@ -94,7 +40,6 @@ process_args() {
 
 main() {
    process_args "$@"
-   set_filters
    list | format
 }
 main "$@"

@@ -2,7 +2,7 @@
 #
 # A fuzzy file explorer
 #
-# Dpendencies: fzf, tmux, faint-list, faint-launch & faint-operate
+# Dpendencies: fzf, faint-list, faint-launch & faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)

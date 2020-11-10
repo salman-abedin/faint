@@ -2,7 +2,7 @@
 #
 # A fuzzy file explorer
 #
-# Dpendencies: fzf, faint-list, faint-launch, faint-operate & cat
+# Dpendencies: fzf, faint-list, faint-launch, faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -43,7 +43,8 @@ FZF_DEFAULT_OPTS="\
 export FZF_DEFAULT_OPT
 
 change_root() {
-   cd "$(cat $LAST_PATH)" || exit 1
+   read -r LAST_DIR < "$LAST_PATH"
+   cd "$LAST_DIR" || exit 1
    $SHELL
 }
 

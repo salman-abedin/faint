@@ -41,7 +41,8 @@ OPS="\
 LIST=/tmp/list
 FILES=$(
    for file in "$@"; do
-      echo "$(cat "$LAST_PATH")/${file#* }"
+      read -r LAST_DIR < "$LAST_PATH"
+      echo "$LAST_DIR/${file#* }"
    done
 )
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up,\;:accept"

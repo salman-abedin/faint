@@ -25,18 +25,18 @@ yarn.lock;
 #              Operation Functions
 #---------------------------------------
 # Variable Conventions
-#     FILE_ARGS = Files selected for operation
-#     FILE_LIST = Files tracked for consecutive operations
+#     FILE_ARGS      = Files selected for operation ( ⁉ Has to be unquoted )
+#     FILE_LIST      = Files tracked for consecutive operations
 #     FILE_LIST_PATH = PATH for tracking files
 
-delete() { rm -fr "$FILE_ARGS"; }
-trash() { rsync -a "$FILE_ARGS" "$TRASH" && delete; }
-yank() { echo "$FILE_ARGS" | xsel -b && echo "$FILE_ARGS" > "$FILE_LIST_PATH"; }
-paste() { rsync -a "$FILE_LIST" "$LAST_DIR"; }
-duplicate() { rsync -a "$FILE_ARGS" "$FILE_ARGS~"; }
-move() { mv "$FILE_LIST" "$LAST_DIR"; }
-link_soft() { cp -frus "$FILE_LIST" "$LAST_DIR"; }
-link_hard() { cp -frul "$FILE_LIST" "$LAST_DIR"; }
+delete() { rm -fr $FILE_ARGS; }
+trash() { rsync -a $FILE_ARGS "$TRASH" && delete; }
+yank() { echo $FILE_ARGS | xsel -b && echo $FILE_ARGS > "$FILE_LIST_PATH"; }
+paste() { rsync -a $FILE_LIST "$LAST_DIR"; }
+duplicate() { rsync -a $FILE_ARGS $FILE_ARGS~; }
+move() { mv $FILE_LIST "$LAST_DIR"; }
+link_soft() { cp -frus $FILE_LIST "$LAST_DIR"; }
+link_hard() { cp -frul $FILE_LIST "$LAST_DIR"; }
 
 #---------------------------------------
 # <OPERATION_NAME>:<OPERATION_FUNCTION>

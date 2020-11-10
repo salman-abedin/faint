@@ -35,12 +35,14 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ### Commands
 
-| Command            | Effect                         |
-| ------------------ | ------------------------------ |
-| `faint`            | Explore current directory      |
-| `faint <PATH>`     | Explore specified directory    |
-| `faint -l`         | Explore last visited directory |
-| `faint -d <DEPTH>` | Explore nested files           |
+| Command                | Effect                          |
+| ---------------------- | ------------------------------- |
+| `faint`                | Explore current directory       |
+| `faint <PATH>`         | Explore specified directory     |
+| `faint -l`             | Explore last visited directory  |
+| `faint -d <DEPTH>`     | Explore nested files            |
+| `faint -n`             | No Filtering                    |
+| `faint -d 3 -n <PATH>` | Command Overloading is possible |
 
 ### Default Bindings
 

@@ -6,8 +6,6 @@
 
 . faint-config
 
-FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
-
 #---------------------------------------
 #              Icons
 #---------------------------------------
@@ -41,23 +39,6 @@ format() {
       fi
       echo "$PREFIX ${file#./}"
    done
-}
-
-_get_filters() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $FILTERS; do
-      printf "%s" "$line"
-   done
-   IFS=$CURRENT_IFS
-}
-
-set_filters() {
-   [ -s "$FILTERS_PATH" ] ||
-      _get_filters |
-      awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > "$FILTERS_PATH"
 }
 
 list() {
@@ -94,7 +75,6 @@ process_args() {
 
 main() {
    process_args "$@"
-   set_filters
    list | format
 }
 main "$@"

@@ -13,6 +13,7 @@
 
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=~/.local/share/faint/FAINT_LAST
+export FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -26,6 +27,28 @@ FZF_DEFAULT_OPTS="\
    "
 export FZF_DEFAULT_OPT
 
+FILTERING=1
+
+_get_filters() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $FILTERS; do
+      printf "%s" "$line"
+   done
+   IFS=$CURRENT_IFS
+}
+
+set_filters() {
+   if [ "$FILTERING" = 0 ]; then
+      echo zzz > "$FILTERS_PATH"
+   else
+      _get_filters |
+         awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > "$FILTERS_PATH"
+   fi
+}
+
 change_root() {
    read -r LAST_DIR < "$LAST_PATH"
    cd "$LAST_DIR" || exit 1
@@ -35,6 +58,7 @@ change_root() {
 init() {
    echo "${DEPTH:-1}" > $DEPTH_PATH
    [ -d ~/.local/share/faint ] || mkdir -p ~/.local/share/faint
+   set_filters
 }
 
 process_args() {
@@ -42,6 +66,7 @@ process_args() {
       case $1 in
          -d) shift && DEPTH=$1 ;;
          -l) read -r DEST < $LAST_PATH ;;
+         -n) FILTERING=0 ;;
          *) break ;;
       esac
       shift

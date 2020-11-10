@@ -1,6 +1,6 @@
-# faint: A fuzzy finder file explorer
+# faint: Extensible TUI fuzzy file explorer
 
-faint is a TUI fuzzy file explorer with scriptable operations & launch behaviors
+**faint** is a TUI fuzzy file explorer with scriptable operations & launch behaviors
 
 ## Features
 

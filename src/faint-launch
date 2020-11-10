@@ -5,12 +5,22 @@
 # Dependencies: file
 
 case $(file --mime-type "$1" -bL) in
+   #---------------------------------------
+   #              Config
+   #---------------------------------------
+
+   # Check for the mimetype of your file (This is POSIX regex)
+   video* | audio* | *gif)
+      # Launch using your preferred command
+      mpv "$1"
+      ;;
+   # So on and so forth...
    text* | *x-empty | *json | *octet-stream)
       tmux split-window -h "$EDITOR $1" \; \
          swap-pane -d -t :.1 \; \
          select-layout main-vertical
       ;;
    *)
-      return
+      exit 1
       ;;
 esac

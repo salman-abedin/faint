@@ -1,18 +1,29 @@
-# faint: A fuzzy finder file explorer
+# faint: Extensible TUI fuzzy file explorer
 
-faint is a fuzzy finding file explorer with scriptable operations & launch behaviors
+**faint** is a TUI fuzzy file explorer with scriptable operations & launch behaviors
 
 ## Features
 
--  Fuzzy Finding & Depth Searching
--  Back & Forth Navigation
--  Scriptable Operations
--  Scriptable Launch Behaviors
--  Filtering & Emojis
+-  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation
+
+![](demo/navigation.gif)
+
+-  ### Scriptable Launch Behaviors
+
+![](demo/launching.gif)
+
+-  ### Scriptable Operations
+
+![](demo/operations.gif)
+
+-  ### Filtering & Icons
+
+![](demo/filtering.gif)
 
 ## Dependencies
 
--  fzf, tmux, find, sed, awk, file, & cat
+-  [fzf](https://github.com/junegunn/fzf)
+-  `find, sed, awk, file, & cat`
 
 ## Installation
 
@@ -22,7 +33,27 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ## Usage
 
--  consult the config section on the script for your preferred settings
+### Commands
+
+| Command            | Effect                         |
+| ------------------ | ------------------------------ |
+| `faint`            | Explore current directory      |
+| `faint <PATH>`     | Explore specified directory    |
+| `faint -l`         | Explore last visited directory |
+| `faint -d <DEPTH>` | Explore nested files           |
+
+### Default Bindings
+
+| Key     | Effect                                               |
+| ------- | ---------------------------------------------------- |
+| `;`     | `cd` into the directory or launch the file           |
+| `,`     | `cd` back                                            |
+| `space` | Pops open the operations menu for the selected files |
+| `esc`   | Clears the query or quits the program                |
+| `enter` | Drops down to shell on the last visited directory    |
+
+-  Consult the **Config** section of the relevant scripts for your preferred settings
+-  **Reinstall** after making changes to the scripts
 
 ## Update
 
@@ -44,6 +75,7 @@ sudo make uninstall
 
 | Name                                                    | Description                     |
 | ------------------------------------------------------- | ------------------------------- |
+| [devour](https://github.com/salman-abedin/devour)       | X11 window swallower            |
 | [bolt](https://github.com/salman-abedin/bolt)           | The launcher wrapper            |
 | [uniblocks](https://github.com/salman-abedin/uniblocks) | The status bar wrapper          |
 | [tide](https://github.com/salman-abedin/tide)           | Minimal Transmission CLI client |
@@ -51,7 +83,6 @@ sudo make uninstall
 | [crystal](https://github.com/salman-abedin/crystal)     | The transparent setup           |
 | [Magpie](https://github.com/salman-abedin/magpie)       | The dotfiles                    |
 | [Alfred](https://github.com/salman-abedin/alfred)       | The scripts                     |
-| [devour](https://github.com/salman-abedin/devour)       | X11 window swallower            |
 
 ---
 

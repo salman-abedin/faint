@@ -2,7 +2,7 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, sed & cat
+# Dependencie: find & cat
 
 LAST_DIR=$(cat "$LAST_PATH")
 
@@ -48,10 +48,11 @@ process_args() {
          -e) shift && cd "$1" || exit 1 ;;
          -l)
             shift
-            NEW_DIR=$(echo "$1" | sed 's/\W //')
+            # NEW_DIR=$(echo "$1" | sed 's/\W //')
+            NEW_DIR=${1#* }
             DEST=$LAST_DIR/$NEW_DIR
             if ! cd "$DEST"; then
-               mux "$DEST"
+               faint-launch "$DEST"
                cd "${DEST%/*}" || exit 1
             fi
             ;;

@@ -37,6 +37,8 @@ yarn.lock;
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=~/.local/share/FAINT_LAST
 export FILTERS_PATH=~/.local/share/FAINT_FILTERS
+
+FZF_DEFAULT_OPTS="--reverse --border --no-info --cycle --margin 15%,30% --bind=\;:accept,]:jump-accept,esc:cancel --no-color --header ''"
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    -m

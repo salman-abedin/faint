@@ -4,39 +4,42 @@
 #
 # Dependencie: cat
 
-export LIST=/tmp/list
-FILES=$(
-   for file in "$@"; do
-      readlink -f "${file#* }"
-   done
-)
-export FILES
-
 #===============================================================================
 #                             Config
 #===============================================================================
 
-yank() {
-   echo "$*" | xsel -b
-   echo "$*" > $LIST
-}
+trash() { rm -fr "$FILES"; }
+delete() { rm -fr "$FILES"; }
+yank() { echo "$FILES" | xsel -b && echo "$FILES" > "$LIST"; }
+paste() { rsync -a "$(cat "$LIST")" .; }
+duplicate() { rsync -a "$FILES" "$FILES~"; }
+move() { mv "$(cat "$LIST")" .; }
+link_soft() { cp -frus "$(cat "$LIST")" .; }
+link_hard() { cp -frul "$(cat "$LIST")" .; }
 
-# OPS='Trash:mv $FILES $HOME/.local/share/Trash;
-OPS='Trash:ns yo;
-Delete:rm -fr $FILES;
-Yank:yank $FILES;
-Paste:rsync -a $(cat $LIST) .;
-Duplicate:rsync -a $FILES $FILES~;
-Move:mv $(cat $LIST) .;
-Soft Link:cp -frus $(cat $LIST) .;
-Hard Link:cp -frul $(cat $LIST) .;
-'
-
-# Paste:rsync -a $(cat $LIST) $PWD;
+OPS="\
+⚔ Trash:trash;
+❌ Delete:delete;
+© Yank:yank;
+🖌 Paste:paste;
+🚚 Move:move;
+‼ Duplicate:duplicate;
+🗞 Soft Link:link_soft;
+🌴 Hard Link:link_hard;
+"
 
 #===============================================================================
 #                             Script
 #===============================================================================
+
+LIST=/tmp/list
+FILES=$(
+   for file in "$@"; do
+      # readlink -f "${file#* }"
+      echo "$(cat "$LAST_PATH")/${file#* }"
+   done
+)
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up,\;:accept"
 
 get_config() {
    CURRENT_IFS=$IFS
@@ -54,15 +57,9 @@ get_config() {
    IFS=$CURRENT_IFS
 }
 
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --bind=tab:down,btab:up"
-
-CHOICE=$(get_config -o | fzf) &&
-   CMD=$(get_config -c "${CHOICE#* }") &&
-   ns "$CMD"
-# $CMD 2> /dev/null
-
-#===============================================================================
-#                             Exp
-#===============================================================================
-
-# readlink -f "${file#* }"
+main() {
+   CHOICE=$(get_config -o | fzf) &&
+      CMD=$(get_config -c "${CHOICE#* }") &&
+      $CMD 2> /dev/null
+}
+main

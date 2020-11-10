@@ -32,7 +32,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ## Usage
 
--  consult the config section of the relevant scripts for your preferred settings
+-  Consult the config section of the relevant scripts for your preferred settings
+-  Reinstall after making changes to the script
 
 ## Update
 
@@ -54,6 +55,7 @@ sudo make uninstall
 
 | Name                                                    | Description                     |
 | ------------------------------------------------------- | ------------------------------- |
+| [devour](https://github.com/salman-abedin/devour)       | X11 window swallower            |
 | [bolt](https://github.com/salman-abedin/bolt)           | The launcher wrapper            |
 | [uniblocks](https://github.com/salman-abedin/uniblocks) | The status bar wrapper          |
 | [tide](https://github.com/salman-abedin/tide)           | Minimal Transmission CLI client |
@@ -61,7 +63,6 @@ sudo make uninstall
 | [crystal](https://github.com/salman-abedin/crystal)     | The transparent setup           |
 | [Magpie](https://github.com/salman-abedin/magpie)       | The dotfiles                    |
 | [Alfred](https://github.com/salman-abedin/alfred)       | The scripts                     |
-| [devour](https://github.com/salman-abedin/devour)       | X11 window swallower            |
 
 ---
 

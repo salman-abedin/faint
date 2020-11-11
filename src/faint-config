@@ -5,8 +5,9 @@
 # Dependencies: file
 
 #===============================================================================
-#              Bindings ( ⁉ has to be a single character!)
+#                 Bindings ( ⁉ has to be a single character!)
 #===============================================================================
+
 KEY_LAUNCH=";"
 KEY_BACK=","
 KEY_OPERATE="space"
@@ -28,14 +29,14 @@ yarn.lock;
 #                             Operations
 #===============================================================================
 
-#---------------------------------------
-#              Functions
-#---------------------------------------
 # Variable Conventions
 #     FILE_ARGS      = Files selected for operation ( ⁉ Has to be unquoted )
 #     FILE_LIST      = Files tracked for consecutive operations
 #     FILE_LIST_PATH = PATH for tracking files
 
+#---------------------------------------
+# Operation Functions
+#---------------------------------------
 delete() { rm -fr $FILE_ARGS; }
 trash() { rsync -a $FILE_ARGS "$TRASH" && delete; }
 yank() { echo $FILE_ARGS | xsel -b && echo $FILE_ARGS > "$FILE_LIST_PATH"; }
@@ -60,7 +61,30 @@ OPS="\
 "
 
 #===============================================================================
-#                             Icons
+#                             Launching
+#===============================================================================
+
+faint_launch() {
+   case $(file --mime-type "$1" -bL) in
+      # Check for the mimetype of your file (This is POSIX regex)
+      video* | audio* | *gif)
+         # Launch using your preferred command
+         mpv "$1"
+         ;;
+      # So on and so forth...
+      text* | *x-empty | *json | *octet-stream)
+         tmux split-window -h "$EDITOR $1" \; \
+            swap-pane -d -t :.1 \; \
+            select-layout main-vertical
+         ;;
+      *)
+         exit 1
+         ;;
+   esac
+}
+
+#===============================================================================
+#                               Icons
 #===============================================================================
 
 format() {
@@ -68,7 +92,7 @@ format() {
       [ "$file" = . ] && continue
       if [ -d "$file" ]; then
          #---------------------------------------
-         #              Folder Icon
+         # Folder Icon
          #---------------------------------------
          PREFIX="📁"
       else
@@ -93,27 +117,4 @@ format() {
       fi
       echo "$PREFIX ${file#./}"
    done
-}
-
-#===============================================================================
-#                             Launching
-#===============================================================================
-
-faint_launch() {
-   case $(file --mime-type "$1" -bL) in
-      # Check for the mimetype of your file (This is POSIX regex)
-      video* | audio* | *gif)
-         # Launch using your preferred command
-         mpv "$1"
-         ;;
-      # So on and so forth...
-      text* | *x-empty | *json | *octet-stream)
-         tmux split-window -h "$EDITOR $1" \; \
-            swap-pane -d -t :.1 \; \
-            select-layout main-vertical
-         ;;
-      *)
-         exit 1
-         ;;
-   esac
 }

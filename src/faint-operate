@@ -9,7 +9,7 @@
 FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
 
 read -r LAST_DIR < "$LAST_PATH"
-read -r FILE_LIST < "$FILE_LIST_PATH"
+[ -f "$FILE_LIST_PATH" ] && read -r FILE_LIST < "$FILE_LIST_PATH"
 
 FILE_ARGS=$(
    read -r LAST_DIR < "$LAST_PATH"

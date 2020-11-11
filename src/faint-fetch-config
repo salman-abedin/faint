@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Helper function for faint: fetches the relevant configs
+# Dependency: Pure POSIX shellscript baby!
+
+CURRENT_IFS=$IFS
+IFS=$(printf ';')
+SRC=$1
+shift
+for line in $SRC; do
+   case $1 in
+      -k) printf "%s" "${line%:*}" ;;
+      -v)
+         case $line in
+            *"$2"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
+         esac
+         ;;
+   esac
+done
+IFS=$CURRENT_IFS

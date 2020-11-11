@@ -2,7 +2,7 @@
 #
 # Helper script for faint. Allows misc operations on files
 #
-# Dependencies: fzf & faint-config
+# Dependencies: fzf, faint-config & faint-fetch-config
 
 . faint-config
 
@@ -24,26 +24,10 @@ export FZF_DEFAULT_OPTS="\
    --bind \"$KEY_LAUNCH:accept\"
    "
 
-get_config() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $OPS; do
-      case $1 in
-         -o) printf "%s" "${line%%:*}" ;;
-         -c)
-            case $line in
-               *"$2"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
-            esac
-            ;;
-      esac
-   done
-   IFS=$CURRENT_IFS
-}
-
 main() {
-   mv "$LAST_PATH" "$FINAL_PATH"
-   CHOICE=$(get_config -o | fzf) &&
-      CMD=$(get_config -c "${CHOICE#* }") &&
+   cp "$LAST_PATH" "$FINAL_PATH"
+   CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
+      CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&
       $CMD 2> /dev/null
 }
 main

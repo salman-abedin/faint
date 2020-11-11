@@ -1,6 +1,6 @@
 # faint: Extensible TUI fuzzy file explorer
 
-**faint** is a fuzzy file explorer for the CLI with scriptable operations & launch behaviors
+**faint** is a fuzzy file explorer for the CLI that supports scriptable operations & launch behaviors as Icons & Emojis.
 
 ## Features
 

@@ -6,13 +6,15 @@
 # Bindings ( ⁉ has to be a single character!) [ More on fzf man page ]
 #===============================================================================
 
-KEY_LAUNCH=";"
-KEY_BACK=","
-KEY_OPERATE="space"
-KEY_QUIT="esc"
-KEY_SHELL="enter"
-KEY_UP="["
-KEY_DOWN="]"
+KEY_LAUNCH=';'
+KEY_BACK=','
+KEY_OPERATE='space'
+KEY_QUIT='esc'
+KEY_SHELL='enter'
+KEY_UP='['
+KEY_DOWN=']'
+KEY_MARK_ALL='\\'
+KEY_EDIT="'"
 
 #===============================================================================
 #                             Filters

@@ -1,6 +1,7 @@
 #!/bin/sh
 #
-# Helper function for faint: fetches the relevant configs
+# Helper script for faint: fetches the relevant configs
+#
 # Dependency: Pure POSIX shellscript baby!
 
 CURRENT_IFS=$IFS

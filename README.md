@@ -16,7 +16,7 @@
 
 ![](demo/operations.gif)
 
--  ### Filtering & Icons
+-  ### Filters & Icons
 
 ![](demo/filtering.gif)
 
@@ -57,11 +57,12 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `btab`  | Unmark files                                         |
 | `[`     | Navigate Up                                          |
 | `]`     | Navigate Down                                        |
+| `\`     | Toggle Mark All                                      |
 
 ### Modifications
 
 -  Consult the `faint-config` script for all your modifications need
--  **Reinstall** after making changes
+-  `sudo make install` after making changes
 
 ## Update
 

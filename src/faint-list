@@ -6,10 +6,10 @@
 
 . faint-config
 
-_get_mimes() {
+_get_launch_cmd() {
    CURRENT_IFS=$IFS
    IFS=$(printf ';')
-   for line in $MIMES; do
+   for line in $LAUNCH_CMD; do
       case $line in
          *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
       esac
@@ -18,12 +18,11 @@ _get_mimes() {
 }
 
 faint_launch() {
-   ARG_MIME=$(file --mime-type "$1" -bL)
-   CMD=$(_get_mimes "$ARG_MIME")
-   if [ -z "$CMD" ]; then
-      notify-send "No commands found for $ARG_MIME type"
-      return
-   fi
+   MIME=$(file --mime-type "$1" -bL)
+   CMD=$(_get_launch_cmd "$MIME")
+   [ -z "$CMD" ] &&
+      notify-send -t 0 "No command found for $MIME type" &&
+      CMD=$(_get_launch_cmd default)
    "$CMD" "$1" 2> /dev/null
 }
 

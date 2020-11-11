@@ -64,33 +64,25 @@ OPS="\
 #                             Launching
 #===============================================================================
 
-faint_launch() {
-   case $(file --mime-type "$1" -bL) in
-      # Check for the mimetype of your file (This is POSIX regex)
-      video* | audio* | *gif)
-         # Launch using your preferred command
-         mpv "$1"
-         ;;
-      # So on and so forth...
-      text* | *x-empty | *json | *octet-stream)
-         tmux split-window -h "$EDITOR $1" \; \
-            swap-pane -d -t :.1 \; \
-            select-layout main-vertical
-         ;;
-      *)
-         exit 1
-         ;;
-   esac
+#---------------------------------------
+#              Launch Functions
+#---------------------------------------
+
+launch_media() {
+   ns "$1"
 }
 
-#===============================================================================
-#                               Icons
-#===============================================================================
+#---------------------------------------
+# <MIME_TYPE>:<Launch Functions>
+#---------------------------------------
+MIMES="\
+video/mp4:launch_media;
+"
 
-get_icon() {
+_get_mimes() {
    CURRENT_IFS=$IFS
    IFS=$(printf ';')
-   for line in $ICONS; do
+   for line in $MIMES; do
       case $line in
          *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
       esac
@@ -98,34 +90,31 @@ get_icon() {
    IFS=$CURRENT_IFS
 }
 
-format() {
-   while read -r file; do
-      [ "$file" = . ] && continue
-      if [ -d "$file" ]; then
-         #---------------------------------------
-         # Folder Icon
-         #---------------------------------------
-         PREFIX="📁"
-      else
-         EXT=${file##*.}
-         #---------------------------------------
-         # File Icons according to extensions
-         #---------------------------------------
-         case $EXT in
-            iso | img) PREFIX="📀" ;;
-            png | ico) PREFIX="🖼" ;;
-            jpg | jpeg) PREFIX="📸" ;;
-            part) PREFIX="💔" ;;
-            json) PREFIX="📒" ;;
-            md) PREFIX="📘" ;;
-            tex) PREFIX="📜" ;;
-            css | sass | scss) PREFIX="🎨" ;;
-            html | pug) PREFIX="🌎" ;;
-            pdf | epub) PREFIX="📚" ;;
-            mp4 | mkv) PREFIX="🎥" ;;
-            *) PREFIX="📃" ;;
-         esac
-      fi
-      echo "$PREFIX ${file#./}"
-   done
+faint_launch() {
+   ARG_MIME=$(file --mime-type "$1" -bL)
+   CMD=$(_get_mimes "$ARG_MIME")
+   "$CMD" "$1" 2> /dev/null
 }
+
+#===============================================================================
+#                               Icons
+#===============================================================================
+
+#---------------------------------------
+# <EXTENSION1|EXTENSION2|...>:<ICON>
+#---------------------------------------
+ICONS="\
+dir:📁;
+file:📃;
+iso|img:📀;
+png|ico:🖼;
+jpg|jpeg:📸;
+part:💔;
+json:📒;
+md:📘;
+tex:📜;
+css|sass|scss:🎨;
+html|pug:🌎;
+pdf|epub: 📚;
+mp4|mkv:🎥;
+"

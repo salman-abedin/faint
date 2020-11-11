@@ -55,6 +55,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `enter` | Drops down to shell on the last visited directory    |
 | `tab`   | Mark files                                           |
 | `btab`  | Unmark files                                         |
+| `[`     | Navigate Up                                          |
+| `]`     | Navigate Down                                        |
 
 ### Modifications
 

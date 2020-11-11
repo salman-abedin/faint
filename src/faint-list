@@ -2,53 +2,28 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find & faint-config
+# Dependencie: find, file, faint-config & faint-fetch-config
 
 . faint-config
 
-_get_mimes() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $MIMES; do
-      case $line in
-         *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
-      esac
-   done
-   IFS=$CURRENT_IFS
-}
-
 faint_launch() {
-   ARG_MIME=$(file --mime-type "$1" -bL)
-   CMD=$(_get_mimes "$ARG_MIME")
-   if [ -z "$CMD" ]; then
-      notify-send "No commands found for $ARG_MIME type"
-      return
-   fi
+   MIME=$(file --mime-type "$1" -bL)
+   CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v "$MIME")
+   [ -z "$CMD" ] && CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v default)
    "$CMD" "$1" 2> /dev/null
-}
-
-_get_icon() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $ICONS; do
-      case $line in
-         *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
-      esac
-   done
-   IFS=$CURRENT_IFS
 }
 
 format() {
    while read -r file; do
       [ "$file" = . ] && continue
       if [ -d "$file" ]; then
-         PREFIX=$(_get_icon dir)
+         PREFIX=$(faint-fetch-config "$ICONS" -v dir)
       else
-         ICON=$(_get_icon "${file##*.}")
+         ICON=$(faint-fetch-config "$ICONS" -v "${file##*.}")
          if [ -n "$ICON" ]; then
             PREFIX=$ICON
          else
-            PREFIX=$(_get_icon file)
+            PREFIX=$(faint-fetch-config "$ICONS" -v file)
          fi
       fi
       echo "$PREFIX ${file#./}"

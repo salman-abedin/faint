@@ -2,7 +2,8 @@
 #
 # A fuzzy file explorer
 #
-# Dpendencies: fzf, faint-config, faint-list, faint-operate, sed & awk
+# Dpendencies:
+#    sed, awk, fzf, faint-config, faint-list, faint-operate & faint-fetch-config
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -27,25 +28,18 @@ FZF_DEFAULT_OPTS="\
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"
+   --bind \"$KEY_UP:up\"
+   --bind \"$KEY_DOWN:down\"
    "
 export FZF_DEFAULT_OPT
 
 FILTERING=1
 
-_get_filters() {
-   CURRENT_IFS=$IFS
-   IFS=$(printf ';')
-   for line in $FILTERS; do
-      printf "%s" "$line"
-   done
-   IFS=$CURRENT_IFS
-}
-
 set_filters() {
    if [ "$FILTERING" = 0 ]; then
       echo zzz > "$FILTERS_PATH"
    else
-      _get_filters |
+      faint-fetch-config "$FILTERS" -k |
          awk '{printf "%s\\|",$0;}' |
          sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
             > "$FILTERS_PATH"

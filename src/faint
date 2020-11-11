@@ -21,8 +21,8 @@ export FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
-   --reverse --border --no-info --cycle --margin 15%,30% --no-color --header ''
-   -m
+   --reverse --border --no-info --margin 15%,30% --no-color --header ''
+   -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
    --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint -l)\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"

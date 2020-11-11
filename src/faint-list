@@ -2,15 +2,15 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, file, faint-config & faint-fetch-config
+# Dependencie: find, faint-config & faint-fetch-config
 
 . faint-config
 
 faint_launch() {
-   MIME=$(file --mime-type "$1" -bL)
-   CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v "$MIME")
+   EXT=${1##*.}
+   CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v "$EXT")
    [ -z "$CMD" ] && CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v default)
-   "$CMD" "$1" 2> /dev/null
+   "$CMD" "$1" > /dev/null 2>&1 &
 }
 
 format() {

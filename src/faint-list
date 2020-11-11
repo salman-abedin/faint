@@ -6,6 +6,55 @@
 
 . faint-config
 
+_get_mimes() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $MIMES; do
+      case $line in
+         *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
+      esac
+   done
+   IFS=$CURRENT_IFS
+}
+
+faint_launch() {
+   ARG_MIME=$(file --mime-type "$1" -bL)
+   CMD=$(_get_mimes "$ARG_MIME")
+   if [ -z "$CMD" ]; then
+      notify-send "No commands found for $ARG_MIME type"
+      return
+   fi
+   "$CMD" "$1" 2> /dev/null
+}
+
+_get_icon() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $ICONS; do
+      case $line in
+         *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
+      esac
+   done
+   IFS=$CURRENT_IFS
+}
+
+format() {
+   while read -r file; do
+      [ "$file" = . ] && continue
+      if [ -d "$file" ]; then
+         PREFIX=$(_get_icon dir)
+      else
+         ICON=$(_get_icon "${file##*.}")
+         if [ -n "$ICON" ]; then
+            PREFIX=$ICON
+         else
+            PREFIX=$(_get_icon file)
+         fi
+      fi
+      echo "$PREFIX ${file#./}"
+   done
+}
+
 list() {
    echo "$PWD" > "$LAST_PATH"
    read -r DEPTH < "$DEPTH_PATH"
@@ -17,25 +66,21 @@ list() {
 
 process_args() {
    read -r LAST_DIR < "$LAST_PATH"
-   while :; do
-      case $1 in
-         -b)
-            cd "${LAST_DIR%/*}" || exit 1
-            ;;
-         -e) shift && cd "$1" || exit 1 ;;
-         -l)
-            shift
-            NEW_DIR=${1#* }
-            DEST=$LAST_DIR/$NEW_DIR
-            if ! cd "$DEST"; then
-               faint_launch "$DEST"
-               cd "$LAST_DIR" || exit 1
-            fi
-            ;;
-         *) break ;;
-      esac
-      shift
-   done
+   case $1 in
+      -b)
+         cd "${LAST_DIR%/*}" || exit 1
+         ;;
+      -e) shift && cd "$1" || exit 1 ;;
+      -l)
+         shift
+         NEW_DIR=${1#* }
+         DEST=$LAST_DIR/$NEW_DIR
+         if ! cd "$DEST"; then
+            faint_launch "$DEST"
+            cd "$LAST_DIR" || exit 1
+         fi
+         ;;
+   esac
 }
 
 main() {

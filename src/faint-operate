@@ -41,6 +41,7 @@ get_config() {
 }
 
 main() {
+   mv "$LAST_PATH" "$FINAL_PATH"
    CHOICE=$(get_config -o | fzf) &&
       CMD=$(get_config -c "${CHOICE#* }") &&
       $CMD 2> /dev/null

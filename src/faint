@@ -14,8 +14,10 @@
 . faint-config
 
 export DEPTH_PATH=/tmp/FAINT_DEPTH
-export LAST_PATH=~/.local/share/faint/FAINT_LAST
+export LAST_PATH=/tmp/FAINT_LAST_$$
 export FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
+
+FINAL_PATH=/tmp/FAINT_FINAL
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -58,6 +60,7 @@ change_root() {
 }
 
 init() {
+   echo "$PWD" > "$LAST_PATH"
    echo "${DEPTH:-1}" > $DEPTH_PATH
    [ -d ~/.local/share/faint ] || mkdir -p ~/.local/share/faint
    set_filters
@@ -67,7 +70,7 @@ process_args() {
    while :; do
       case $1 in
          -d) shift && DEPTH=$1 ;;
-         -l) read -r DEST < $LAST_PATH ;;
+         -l) read -r DEST < $FINAL_PATH ;;
          -n) FILTERING=0 ;;
          *) break ;;
       esac
@@ -81,5 +84,6 @@ main() {
    init
    trap 'change_root' RTMIN+1
    faint-list -e "${DEST:-$PWD}" | fzf
+   mv "$LAST_PATH" "$FINAL_PATH"
 }
 main "$@"

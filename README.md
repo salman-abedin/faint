@@ -23,7 +23,7 @@
 ## Dependencies
 
 -  [fzf](https://github.com/junegunn/fzf)
--  `find, sed, awk, & file`
+-  `find, sed & awk`
 
 ## Installation
 

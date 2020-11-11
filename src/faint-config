@@ -87,6 +87,17 @@ faint_launch() {
 #                               Icons
 #===============================================================================
 
+get_icon() {
+   CURRENT_IFS=$IFS
+   IFS=$(printf ';')
+   for line in $ICONS; do
+      case $line in
+         *"$1"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
+      esac
+   done
+   IFS=$CURRENT_IFS
+}
+
 format() {
    while read -r file; do
       [ "$file" = . ] && continue

@@ -3,7 +3,8 @@
 # A fuzzy file explorer
 #
 # Dpendencies:
-#    sed, awk, fzf, faint-launch, faint-config, faint-list, faint-operate & faint-fetch-config
+#              sed, awk, fzf, faint-launch, faint-config, faint-fetch-config
+#              faint-list, & faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -14,26 +15,35 @@
 
 . faint-config
 
+DATA_PATH=$HOME/.local/share/faint
+
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
+<<<<<<< HEAD
 export FINAL_PATH=/tmp/FAINT_FINAL
-export FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
+export FILTERS_PATH=$HOME/.local/share/faint/FAINT_FILTERS
+=======
+export FINAL_PATH=$DATA_PATH/FAINT_FINAL
+export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
+>>>>>>> 72bd26b (fixed some minor bugs)
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border --no-info --margin 15%,30% --no-color --header ''
    -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
-   --bind \"$KEY_OPERATE:abort+execute(faint-operate {+})+execute(faint -l)\"
+   --bind \"$KEY_OPERATE:clear-query+execute(faint-operate {+})+reload(faint-list -L)\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"
+   --bind \"$KEY_EDIT:clear-query+execute(faint-launch -e {})\"
+   --bind \"$KEY_MARK_ALL:toggle-all\"
+   --bind \"$KEY_MARK_DOWN:toggle-down\"
+   --bind \"$KEY_MARK_UP:toggle-up\"
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
-   --bind \"$KEY_MARK_ALL:toggle-all\"
-   --bind \"$KEY_EDIT:clear-query+execute(faint-launch -e {})\"
    "
-export FZF_DEFAULT_OPT
+export FZF_DEFAULT_OPTS
 
 FILTERING=1
 
@@ -57,7 +67,7 @@ change_root() {
 init() {
    echo "$PWD" > "$LAST_PATH"
    echo "${DEPTH:-1}" > $DEPTH_PATH
-   [ -d ~/.local/share/faint ] || mkdir -p ~/.local/share/faint
+   [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
    set_filters
 }
 

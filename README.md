@@ -59,6 +59,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `\`     | Toggle mark All                                      |
 | `tab`   | Toggle mark down                                     |
 | `btab`  | Unmark mark up                                       |
+| `.`     | Refresh the list                                     |
 
 ### Modifications
 

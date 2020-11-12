@@ -17,7 +17,7 @@
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
 export FINAL_PATH=/tmp/FAINT_FINAL
-export FILTERS_PATH=~/.local/share/faint/FAINT_FILTERS
+export FILTERS_PATH=$HOME/.local/share/faint/FAINT_FILTERS
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

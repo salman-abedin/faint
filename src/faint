@@ -3,7 +3,8 @@
 # A fuzzy file explorer
 #
 # Dpendencies:
-#    sed, awk, fzf, faint-launch, faint-config, faint-list, faint-operate & faint-fetch-config
+#              sed, awk, fzf, faint-launch, faint-config, faint-fetch-config
+#              faint-list, & faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)

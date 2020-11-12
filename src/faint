@@ -3,7 +3,7 @@
 # A fuzzy file explorer
 #
 # Dpendencies:
-#    sed, awk, fzf, faint-config, faint-list, faint-operate & faint-fetch-config
+#    sed, awk, fzf, faint-launch, faint-config, faint-list, faint-operate & faint-fetch-config
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -14,10 +14,12 @@
 
 . faint-config
 
+DATA_PATH=$HOME/.local/share/faint
+
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
-export FINAL_PATH=/tmp/FAINT_FINAL
-export FILTERS_PATH=$HOME/.local/share/faint/FAINT_FILTERS
+export FINAL_PATH=$DATA_PATH/FAINT_FINAL
+export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -31,8 +33,9 @@ FZF_DEFAULT_OPTS="\
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
    --bind \"$KEY_MARK_ALL:toggle-all\"
+   --bind \"$KEY_EDIT:clear-query+execute(faint-launch -e {})\"
    "
-export FZF_DEFAULT_OPT
+export FZF_DEFAULT_OPTS
 
 FILTERING=1
 
@@ -56,7 +59,7 @@ change_root() {
 init() {
    echo "$PWD" > "$LAST_PATH"
    echo "${DEPTH:-1}" > $DEPTH_PATH
-   [ -d ~/.local/share/faint ] || mkdir -p ~/.local/share/faint
+   [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
    set_filters
 }
 

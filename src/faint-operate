@@ -8,8 +8,11 @@
 
 FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
 
-read -r LAST_DIR < "$LAST_PATH"
-[ -f "$FILE_LIST_PATH" ] && read -r FILE_LIST < "$FILE_LIST_PATH"
+export FZF_DEFAULT_OPTS="\
+   $FZF_DEFAULT_OPTS
+   --bind=tab:down,btab:up
+   --bind \"$KEY_LAUNCH:accept\"
+   "
 
 FILE_ARGS=$(
    read -r LAST_DIR < "$LAST_PATH"
@@ -18,16 +21,9 @@ FILE_ARGS=$(
    done
 )
 
-export FZF_DEFAULT_OPTS="\
-   $FZF_DEFAULT_OPTS
-   --bind=tab:down,btab:up
-   --bind \"$KEY_LAUNCH:accept\"
-   "
+[ -f "$FILE_LIST_PATH" ] && read -r FILE_LIST < "$FILE_LIST_PATH"
 
-main() {
-   cp "$LAST_PATH" "$FINAL_PATH"
-   CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
-      CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&
-      $CMD 2> /dev/null
-}
-main
+cp "$LAST_PATH" "$FINAL_PATH"
+CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
+   CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&
+   $CMD 2> /dev/null

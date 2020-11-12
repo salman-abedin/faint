@@ -2,16 +2,9 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, faint-config & faint-fetch-config
+# Dependencie: find, faint-launch, faint-config & faint-fetch-config
 
 . faint-config
-
-faint_launch() {
-   EXT=${1##*.}
-   CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v "$EXT")
-   [ -z "$CMD" ] && CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v default)
-   "$CMD" "$1" > /dev/null 2>&1 &
-}
 
 format() {
    while read -r file; do
@@ -51,7 +44,7 @@ process_args() {
          NEW_DIR=${1#* }
          DEST=$LAST_DIR/$NEW_DIR
          if ! cd "$DEST"; then
-            faint_launch "$DEST"
+            faint-launch "$DEST"
             cd "$LAST_DIR" || exit 1
          fi
          ;;

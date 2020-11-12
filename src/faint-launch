@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Helper script for faint; launches files according to extensions
+#
+# Dependencie: faint-config & faint-fetch-config
+
+. faint-config
+
+if [ "$1" = -e ]; then
+   NEW_DIR=${2#* }
+   read -r LAST_DIR < "$LAST_PATH"
+   FILE=$LAST_DIR/$NEW_DIR
+   "$EDITOR" "$FILE"
+   exit 0
+fi
+
+EXT=${1##*.}
+CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v "$EXT")
+[ -z "$CMD" ] && CMD=$(faint-fetch-config "$LAUNCH_CMDS" -v default)
+"$CMD" "$1" > /dev/null 2>&1 &

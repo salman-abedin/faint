@@ -35,14 +35,14 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ### Commands
 
-| Command                | Effect                          |
-| ---------------------- | ------------------------------- |
-| `faint`                | Explore current directory       |
-| `faint <PATH>`         | Explore specified directory     |
-| `faint -l`             | Explore final visited directory |
-| `faint -d <DEPTH>`     | Explore nested files            |
-| `faint -n`             | No filtering                    |
-| `faint -d 3 -n <PATH>` | Flag overloading is possible    |
+| Command                | Effect                         |
+| ---------------------- | ------------------------------ |
+| `faint`                | Explore current directory      |
+| `faint <PATH>`         | Explore specified directory    |
+| `faint -l`             | Explore last visited directory |
+| `faint -d <DEPTH>`     | Explore nested files           |
+| `faint -n`             | No filtering                   |
+| `faint -d 3 -n <PATH>` | Flag overloading is possible   |
 
 ### Default Bindings
 
@@ -50,6 +50,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | ------- | ---------------------------------------------------- |
 | `;`     | `cd` into the directory or launch the file           |
 | `,`     | `cd` back                                            |
+| `'`     | Edit file using default editor                       |
 | `space` | Pops open the operations menu for the selected files |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |

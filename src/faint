@@ -3,7 +3,7 @@
 # A fuzzy file explorer
 #
 # Dpendencies:
-#    sed, awk, fzf, faint-config, faint-list, faint-operate & faint-fetch-config
+#    sed, awk, fzf, faint-launch, faint-config, faint-list, faint-operate & faint-fetch-config
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -31,6 +31,7 @@ FZF_DEFAULT_OPTS="\
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
    --bind \"$KEY_MARK_ALL:toggle-all\"
+   --bind \"$KEY_EDIT:clear-query+execute(faint-launch -e {})\"
    "
 export FZF_DEFAULT_OPT
 

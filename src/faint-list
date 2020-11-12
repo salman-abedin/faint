@@ -11,6 +11,8 @@ format() {
       [ "$file" = . ] && continue
       if [ -d "$file" ]; then
          PREFIX=$(faint-fetch-config "$ICONS" -v dir)
+      elif [ -L "$file" ]; then
+         PREFIX=$(faint-fetch-config "$ICONS" -v link)
       else
          ICON=$(faint-fetch-config "$ICONS" -v "${file##*.}")
          if [ -n "$ICON" ]; then
@@ -39,6 +41,7 @@ process_args() {
          cd "${LAST_DIR%/*}" || exit 1
          ;;
       -e) shift && cd "$1" || exit 1 ;;
+      -L) cd "$LAST_DIR" || exit 1 ;;
       -l)
          shift
          NEW_DIR=${1#* }

@@ -8,6 +8,8 @@
 
 FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
 
+read -r LAST_DIR < "$LAST_PATH"
+
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --bind=tab:down,btab:up
@@ -15,7 +17,6 @@ export FZF_DEFAULT_OPTS="\
    "
 
 FILE_ARGS=$(
-   read -r LAST_DIR < "$LAST_PATH"
    for file in "$@"; do
       echo "$LAST_DIR/${file#* }"
    done

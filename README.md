@@ -54,11 +54,11 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `space` | Pops open the operations menu for the selected files |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
-| `tab`   | Mark files                                           |
-| `btab`  | Unmark files                                         |
-| `[`     | Navigate Up                                          |
-| `]`     | Navigate Down                                        |
-| `\`     | Toggle Mark All                                      |
+| `[`     | Navigate up                                          |
+| `]`     | Navigate down                                        |
+| `\`     | Toggle mark All                                      |
+| `tab`   | Toggle mark down                                     |
+| `btab`  | Unmark mark up                                       |
 
 ### Modifications
 

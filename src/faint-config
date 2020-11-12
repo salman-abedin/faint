@@ -21,6 +21,8 @@ KEY_MARK_DOWN='tab'
 KEY_MARK_UP='btab'
 KEY_MARK_ALL='\\'
 
+KEY_REFRESH="."
+
 #===============================================================================
 #                             Filters
 #===============================================================================
@@ -43,15 +45,15 @@ yarn.lock;
 #     FILE_ARGS      = Files selected for operation ( ⁉ Has to be unquoted )
 #     FILE_LIST      = Files tracked for consecutive operations
 #     FILE_LIST_PATH = PATH for tracking files
+#     LAST_DIR       = Current path
 
 #---------------------------------------
 # Operation Functions
 #---------------------------------------
 delete() { rm -fr $FILE_ARGS; }
-trash() { rsync -a $FILE_ARGS "$TRASH" && delete; }
+trash() { mv $FILE_ARGS "$TRASH"; }
 yank() { echo $FILE_ARGS | xsel -b && echo $FILE_ARGS > "$FILE_LIST_PATH"; }
-paste() { rsync -a $FILE_LIST "$LAST_DIR"; }
-duplicate() { rsync -a $FILE_ARGS $FILE_ARGS~; }
+paste() { cp -br $FILE_LIST "$LAST_DIR"; }
 move() { mv $FILE_LIST "$LAST_DIR"; }
 link_soft() { cp -frs $FILE_LIST "$LAST_DIR"; }
 link_hard() { cp -frl $FILE_LIST "$LAST_DIR"; }
@@ -65,7 +67,6 @@ OPS="\
 © Yank:yank;
 🖌 Paste:paste;
 🚚 Move:move;
-‼ Duplicate:duplicate;
 🗞 Soft Link:link_soft;
 🌴 Hard Link:link_hard;
 "

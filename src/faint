@@ -27,7 +27,7 @@ FZF_DEFAULT_OPTS="\
    --reverse --border --no-info --margin 15%,30% --no-color --header ''
    -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
-   --bind \"$KEY_OPERATE:clear-query+execute(faint-operate {+})+reload(faint-list -L)\"
+   --bind \"$KEY_OPERATE:clear-query+execute(faint-operate {+})+reload(faint-list -r)\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"
@@ -37,6 +37,7 @@ FZF_DEFAULT_OPTS="\
    --bind \"$KEY_MARK_UP:toggle-up\"
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
+   --bind \"$KEY_REFRESH:reload(faint-list -r)\"
    "
 export FZF_DEFAULT_OPTS
 

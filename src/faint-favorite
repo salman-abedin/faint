@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Helper script for faint. Helps jumping to favorite direcotories
+#
+# Dependencies: fzf, faint-config & faint-fetch-config
+
+. faint-config
+
+export FZF_DEFAULT_OPTS="\
+   $FZF_DEFAULT_OPTS
+   --bind=tab:down,btab:up
+   --bind \"$KEY_LAUNCH:accept\"
+   "
+
+TITLE=$(faint-fetch-config "$FAVS" -k | fzf) &&
+   PATH=$(faint-fetch-config "$FAVS" -v "${TITLE#* }") &&
+   echo "$PATH" > "$LAST_PATH"

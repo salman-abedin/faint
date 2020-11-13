@@ -28,6 +28,7 @@ FZF_DEFAULT_OPTS="\
    -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
    --bind \"$KEY_OPERATE:clear-query+execute(faint-operate {+})+reload(faint-list -r)\"
+   --bind \"$KEY_FAVS:clear-query+execute(faint-favorite {})+reload(faint-list -r)\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"

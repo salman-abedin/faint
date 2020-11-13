@@ -52,6 +52,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `,`     | `cd` back                                            |
 | `'`     | Edit file using default editor                       |
 | `space` | Pops open the operations menu for the selected files |
+| `/`     | Pops open bookmarks                                  |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
 | `[`     | Navigate up                                          |

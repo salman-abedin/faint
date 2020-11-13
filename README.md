@@ -1,6 +1,6 @@
 # faint: Extensible TUI fuzzy file explorer
 
-**faint** is a fuzzy file explorer for the CLI that supports scriptable operations & launch behaviors as Icons & Emojis.
+**faint** is a fuzzy file explorer for the CLI that supports scriptable operations & launch behaviors, Bookmarks and Icons & Emojis.
 
 ## Features
 
@@ -22,7 +22,7 @@
 
 -  ### Bookmarking
 
-![](demo/bookmarking.gif)
+![](demo/bookmarks.gif)
 
 ## Dependencies
 
@@ -39,36 +39,34 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ### Commands
 
-| Command                | Effect                         |
-| ---------------------- | ------------------------------ |
-| `faint`                | Explore current directory      |
-| `faint <PATH>`         | Explore specified directory    |
-| `faint -l`             | Explore last visited directory |
-| `faint -d <DEPTH>`     | Explore nested files           |
-| `faint -n`             | No filtering                   |
-| `faint -d 3 -n <PATH>` | Flag overloading is possible   |
+| Command        | Effect                         |
+| -------------- | ------------------------------ |
+| `faint`        | Explore current directory      |
+| `faint <PATH>` | Explore specified directory    |
+| `faint -l`     | Explore last visited directory |
 
 ### Default Bindings
 
-| Key     | Effect                                               |
-| ------- | ---------------------------------------------------- |
-| `;`     | `cd` into the directory or launch the file           |
-| `,`     | `cd` back                                            |
-| `'`     | Edit file using default editor                       |
-| `space` | Pops open the operations menu for the selected files |
-| `/`     | Pops open bookmarks                                  |
-| `esc`   | Clears the query or quits the program                |
-| `enter` | Drops down to shell on the last visited directory    |
-| `]`     | Toggle mark down                                     |
-| `[`     | Toggle mark up                                       |
-| `\`     | Toggle mark All                                      |
-| `tab`   | Navigate down                                        |
-| `btab`  | Navigate up                                          |
-| `.`     | Refresh the list                                     |
+| Key     | Effect                                             |
+| ------- | -------------------------------------------------- |
+| `;`     | Change directory forward / launch file             |
+| `,`     | Change directory backward                          |
+| `enter` | Drops down to shell on the current directory       |
+| `esc`   | Clears the query / quits the program               |
+| `]`     | Toggle mark down                                   |
+| `[`     | Toggle mark up                                     |
+| `\`     | Toggle mark All                                    |
+| `space` | Pops open the operations menu for the marked files |
+| `'`     | Browse bookmarks / Remove selected bookmark        |
+| `"`     | Add current directory to bookmarks                 |
+| `tab`   | Navigate down                                      |
+| `btab`  | Navigate up                                        |
+| `.`     | Refresh the list                                   |
+| `:`     | Edit file using default editor                     |
 
 ### Modifications
 
--  Consult the `faint-config` script for all your modifications need
+-  Consult the `faint-config` for all your modifications need
 -  `sudo make install` after making changes
 
 ## Update

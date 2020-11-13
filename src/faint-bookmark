@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# Helper script for faint. Helps jumping to favorite direcotories
+#
+# Dependencies: fzf, sed, faint-config & faint-fetch-config
+
+. faint-config
+
+export FZF_DEFAULT_OPTS="\
+   $FZF_DEFAULT_OPTS
+   +m
+   --bind \"$KEY_LAUNCH:accept\"
+   --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -r {})+abort+execute(faint-bookmark -b)\"
+   "
+
+read -r LAST_DIR < "$LAST_PATH"
+
+case $1 in
+   -a) echo "$LAST_DIR" >> "$BOOKMARKS_PATH" ;;
+   -r)
+      PATH_STRING=$(echo "$2" | sed 's/\//\\&/g')
+      sed -i "0,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
+      ;;
+   -b)
+      CHOICE=$(
+         while read -r bookmark; do
+            echo "$bookmark"
+         done < "$BOOKMARKS_PATH" | fzf
+      ) &&
+         echo "$CHOICE" > "$LAST_PATH"
+      ;;
+esac

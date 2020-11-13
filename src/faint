@@ -4,18 +4,16 @@
 #
 # Dpendencies:
 #              sed, awk, fzf, faint-launch, faint-config, faint-fetch-config
-#              faint-list, faint-bookmark & faint-operate
+#              faint-explore, faint-bookmark & faint-operate
 #
 # Usage: faint (launch on the current directory)
-#        faint -l (launch on the last visited directory)
-#        faint -d 3 (explore directories with specified depth)
 #        faint <PATH> (explore certain directories)
-#        faint -n (explore without filtering)
-#        faint -d 3 -n (flag overloading is possible)
+#        faint -l (launch on the last visited directory)
 
 . faint-config
 
 DATA_PATH=$HOME/.local/share/faint
+<<<<<<< HEAD
 
 export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
@@ -23,74 +21,91 @@ export LAST_PATH=/tmp/FAINT_LAST_$$
 export FINAL_PATH=/tmp/FAINT_FINAL
 export FILTERS_PATH=$HOME/.local/share/faint/FAINT_FILTERS
 =======
+=======
+>>>>>>> 1e52e2e ()
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
+<<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 72bd26b (fixed some minor bugs)
+=======
+=======
+export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
+<<<<<<< HEAD
+>>>>>>> bbf9855 ()
+export FAINT_PID=$$
+=======
 
-FZF_DEFAULT_OPTS="\
+export DEPTH_PATH=/tmp/FAINT_DEPTH
+export LAST_PATH=/tmp/FAINT_LAST_$$
+>>>>>>> 1e52e2e ()
+export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
+>>>>>>> 3a8f544 ()
+
+export FAINT_PID=$$
+
+export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border --no-info --margin 15%,30% --no-color --header ''
    -m --cycle
-   --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query+top\"
-   --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-list -r)+clear-query+top\"
-   --bind \"$KEY_BOOKMARK:execute(faint-bookmarks)+reload(faint-list -r)+clear-query+top\"
-   --bind \"$KEY_BACK:reload(faint-list -b)+clear-query+top\"
    --bind \"$KEY_QUIT:cancel\"
-   --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"
+   --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
+   --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
+   --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
    --bind \"$KEY_EDIT:execute(faint-launch -e {})+clear-query+top\"
+
+   --bind \"$KEY_UP:up\"
+   --bind \"$KEY_DOWN:down\"
+   --bind \"$KEY_REFRESH:reload(faint-explore -r)\"
+
    --bind \"$KEY_MARK_ALL:toggle-all\"
    --bind \"$KEY_MARK_DOWN:toggle-down\"
    --bind \"$KEY_MARK_UP:toggle-up\"
-   --bind \"$KEY_UP:up\"
-   --bind \"$KEY_DOWN:down\"
-   --bind \"$KEY_REFRESH:reload(faint-list -r)\"
+
+   --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -b)+reload(faint-explore -r)+clear-query+top\"
+   --bind \"$KEY_BOOKMARK_ADD:execute(faint-bookmark -a)\"
+
+   --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
+
+   --bind \"$KEY_TOGGLE_FILTERS:execute(faint-controller -t filters)+reload(faint-explore -r)\"
+
    "
-export FZF_DEFAULT_OPTS
-
-FILTERING=1
-
-set_filters() {
-   if [ "$FILTERING" = 0 ]; then
-      echo zzz > "$FILTERS_PATH"
-   else
-      faint-fetch-config "$FILTERS" -k |
-         awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > "$FILTERS_PATH"
-   fi
-}
 
 change_root() {
    read -r LAST_DIR < "$LAST_PATH"
    cd "$LAST_DIR" || exit 1
-   $SHELL
+   exec "$SHELL"
+}
+
+edit() {
+   read -r FILE < "$EDITOR_FILE_PATH"
+   $EDITOR "$FILE"
+   read -r LAST_DIR < "$LAST_PATH"
+   exec "$0" "$LAST_DIR"
 }
 
 init() {
    echo "$PWD" > "$LAST_PATH"
-   echo "${DEPTH:-1}" > $DEPTH_PATH
+   echo "${MAX_DEPTH}" > $DEPTH_PATH
    [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
-   set_filters
 }
 
 process_args() {
-   while :; do
-      case $1 in
-         -d) shift && DEPTH=$1 ;;
-         -l) read -r DEST < $FINAL_PATH ;;
-         -n) FILTERING=0 ;;
-         *) break ;;
-      esac
-      shift
-   done
-   [ "$1" ] && DEST=$1
+   case $1 in
+      -l) read -r DEST < "$FINAL_PATH" ;;
+      *) DEST=$1 ;;
+   esac
 }
 
 main() {
    process_args "$@"
    init
+
    trap 'change_root' RTMIN+1
-   faint-list -e "${DEST:-$PWD}" | fzf
+   trap 'edit' RTMIN+2
+   trap 'ns yo' RTMIN+3
+
+   faint-explore "${DEST:-$PWD}" | fzf
    mv "$LAST_PATH" "$FINAL_PATH"
 }
 main "$@"

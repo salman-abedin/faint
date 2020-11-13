@@ -12,7 +12,6 @@ read -r LAST_DIR < "$LAST_PATH"
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
-   --bind=tab:down,btab:up
    --bind \"$KEY_LAUNCH:accept\"
    "
 

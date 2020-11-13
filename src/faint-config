@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # Config file for faint
+# Dependencies: pkill
 
 #===============================================================================
 # Bindings ( ⁉ has to be a single character!) [ More on fzf man page ]
@@ -82,9 +83,10 @@ OPS="\
 
 # Use "$1" for referencing the file
 edit() {
-   tmux split-window -h "$EDITOR $1" \; \
-      swap-pane -d -t :.1 \; \
-      select-layout main-vertical
+   echo "$1" > "$EDITOR_FILE_PATH"
+   cp "$LAST_PATH" "$FINAL_PATH"
+   kill -36 "$FAINT_PID"
+   pkill -P "$FAINT_PID"
 }
 
 #-------------------------------------------------------
@@ -94,7 +96,6 @@ LAUNCH_CMDS="\
 mp4|mkv:mpv;
 default:edit;
 "
-
 #===============================================================================
 #                               Icons
 #===============================================================================

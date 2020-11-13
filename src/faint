@@ -21,17 +21,19 @@ export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
+export FAINT_PID=$$
+export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
 
 FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
-   --reverse --border --no-info --margin 15%,30% --no-color --header ''
+   --reverse --border --no-info --margin 15%,30% --no-color --header \"\" 
    -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BOOKMARK:execute(faint-bookmark)+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
    --bind \"$KEY_QUIT:cancel\"
-   --bind \"$KEY_SHELL:execute(kill -35 $$)\"
+   --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
    --bind \"$KEY_EDIT:execute(faint-launch -e {})+clear-query+top\"
    --bind \"$KEY_MARK_ALL:toggle-all\"
    --bind \"$KEY_MARK_DOWN:toggle-down\"
@@ -56,16 +58,15 @@ set_filters() {
 }
 
 change_root() {
-   ns "yo"
-   # ns "$(pgrep -P $PPID)"
-   # pkill -P $(cat /tmp/pid)
+   read -r LAST_DIR < "$LAST_PATH"
+   cd "$LAST_DIR" || exit 1
+   exec $SHELL
+}
 
-   # nvim
-   # pkill -TERM -P $PPID
-
-   # read -r LAST_DIR < "$LAST_PATH"
-   # cd "$LAST_DIR" || exit 1
-   # $SHELL
+edit() {
+   read FILE < $EDITOR_FILE_PATH
+   $EDITOR "$FILE"
+   exec $0 -l
 }
 
 init() {
@@ -91,6 +92,7 @@ process_args() {
 main() {
    process_args "$@"
    init
+   trap 'edit' RTMIN+2
    trap 'change_root' RTMIN+1
    faint-explore "${DEST:-$PWD}" | fzf
    mv "$LAST_PATH" "$FINAL_PATH"

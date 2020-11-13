@@ -45,9 +45,8 @@ process_args() {
             cd / || exit 1
          fi
          ;;
-      -e) shift && cd "$1" || exit 1 ;;
       -r) cd "$LAST_DIR" || exit 1 ;;
-      -l)
+      -c)
          shift
          NEW_DIR=${1#* }
          DEST=$LAST_DIR/$NEW_DIR
@@ -56,6 +55,7 @@ process_args() {
             cd "$LAST_DIR" || exit 1
          fi
          ;;
+      *) cd "$1" || exit 1 ;;
    esac
 }
 

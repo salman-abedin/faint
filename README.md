@@ -20,10 +20,14 @@
 
 ![](demo/filtering.gif)
 
+-  ### Bookmarking
+
+![](demo/bookmarking.gif)
+
 ## Dependencies
 
 -  [fzf](https://github.com/junegunn/fzf)
--  `find, sed & awk`
+-  `find, sort, sed & awk`
 
 ## Installation
 
@@ -55,11 +59,11 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `/`     | Pops open bookmarks                                  |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
-| `[`     | Navigate up                                          |
-| `]`     | Navigate down                                        |
+| `]`     | Toggle mark down                                     |
+| `[`     | Toggle mark up                                       |
 | `\`     | Toggle mark All                                      |
-| `tab`   | Toggle mark down                                     |
-| `btab`  | Unmark mark up                                       |
+| `tab`   | Navigate down                                        |
+| `btab`  | Navigate up                                          |
 | `.`     | Refresh the list                                     |
 
 ### Modifications

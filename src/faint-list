@@ -2,7 +2,7 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, faint-launch, faint-config & faint-fetch-config
+# Dependencie: find, sort, faint-launch, faint-config & faint-fetch-config
 
 . faint-config
 
@@ -30,8 +30,8 @@ list() {
    read -r DEPTH < "$DEPTH_PATH"
    read -r FILTERS < "$FILTERS_PATH"
    find . -maxdepth "$DEPTH" \
-      ! -regex ".*\($FILTERS\).*" \
-      2> /dev/null
+      ! -regex ".*\($FILTERS\).*" |
+      sort
 }
 
 process_args() {

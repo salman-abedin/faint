@@ -14,11 +14,11 @@ KEY_QUIT='esc'
 KEY_SHELL='enter'
 KEY_EDIT="'"
 
-KEY_UP='['
-KEY_DOWN=']'
+KEY_UP='btab'
+KEY_DOWN='tab'
 
-KEY_MARK_DOWN='tab'
-KEY_MARK_UP='btab'
+KEY_MARK_DOWN=']'
+KEY_MARK_UP='['
 KEY_MARK_ALL='\\'
 
 KEY_REFRESH="."

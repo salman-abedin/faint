@@ -38,7 +38,12 @@ process_args() {
    read -r LAST_DIR < "$LAST_PATH"
    case $1 in
       -b)
-         cd "${LAST_DIR%/*}" || exit 1
+         DIR="${LAST_DIR%/*}"
+         if [ -n "$DIR" ]; then
+            cd "$DIR" || exit 1
+         else
+            cd / || exit 1
+         fi
          ;;
       -e) shift && cd "$1" || exit 1 ;;
       -r) cd "$LAST_DIR" || exit 1 ;;

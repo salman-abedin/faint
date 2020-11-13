@@ -2,7 +2,7 @@
 #
 # Helper script for faint: fetches the relevant configs
 #
-# Dependency: Pure POSIX shellscript baby!
+# Dependency: Milky pure baby!
 
 CURRENT_IFS=$IFS
 IFS=$(printf ';')

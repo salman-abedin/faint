@@ -23,7 +23,6 @@ FILE_ARGS=$(
 
 [ -f "$FILE_LIST_PATH" ] && read -r FILE_LIST < "$FILE_LIST_PATH"
 
-cp "$LAST_PATH" "$FINAL_PATH"
 CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
    CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&
    $CMD 2> /dev/null

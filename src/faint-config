@@ -26,7 +26,6 @@ KEY_REFRESH="."
 
 KEY_BOOKMARK_BROWSE="'"
 KEY_BOOKMARK_ADD='\"'
-KEY_BOOKMARK_REMOVE="/"
 
 #===============================================================================
 #                             Filters
@@ -62,11 +61,17 @@ paste() { cp -br $FILE_LIST "$LAST_DIR"; }
 move() { mv $FILE_LIST "$LAST_DIR"; }
 link_soft() { cp -frs $FILE_LIST "$LAST_DIR"; }
 link_hard() { cp -frl $FILE_LIST "$LAST_DIR"; }
+tmux_pane() {
+   tmux split-window -h "$EDITOR $FILE_ARGS" \; \
+      swap-pane -d -t :.1 \; \
+      select-layout main-vertical
+}
 
 #---------------------------------------
 # <OPERATION_NAME>:<OPERATION_FUNCTION>;
 #---------------------------------------
 OPS="\
+💻 Tmux:tmux_pane;
 ⚔ Trash:trash;
 ❌ Delete:delete;
 © Yank:yank;
@@ -87,7 +92,6 @@ OPS="\
 # Use "$1" for referencing the file
 edit() {
    echo "$1" > "$EDITOR_FILE_PATH"
-   cp "$LAST_PATH" "$FINAL_PATH"
    kill -36 "$FAINT_PID"
    pkill -P "$FAINT_PID"
 }
@@ -121,18 +125,4 @@ css|sass|scss:🎨;
 html|pug:🌎;
 pdf|epub:📚;
 mp4|mkv:🎥;
-"
-
-#===============================================================================
-#                             Favorites
-#===============================================================================
-
-#---------------------------------------
-# <TITLE>:<PATH>;
-#---------------------------------------
-BOOKMARKS="\
-Git:/mnt/horcrux/git/own;
-Downloads:/mnt/horcrux/downloads;
-Torrents:/mnt/horcrux/torrents;
-Notes:/mnt/horcrux/notes;
 "

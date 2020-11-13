@@ -22,7 +22,7 @@
 
 -  ### Bookmarking
 
-![](demo/bookmarking.gif)
+![](demo/bookmarks.gif)
 
 ## Dependencies
 
@@ -54,9 +54,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | ------- | ---------------------------------------------------- |
 | `;`     | `cd` into the directory or launch the file           |
 | `,`     | `cd` back                                            |
-| `'`     | Edit file using default editor                       |
+| `:`     | Edit file using default editor                       |
 | `space` | Pops open the operations menu for the selected files |
-| `/`     | Pops open bookmarks                                  |
 | `esc`   | Clears the query or quits the program                |
 | `enter` | Drops down to shell on the last visited directory    |
 | `]`     | Toggle mark down                                     |
@@ -65,6 +64,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `tab`   | Navigate down                                        |
 | `btab`  | Navigate up                                          |
 | `.`     | Refresh the list                                     |
+| `'`     | Browse bookmarks / Remove selected bookmark          |
+| `"`     | Add current directory to bookmarks                   |
 
 ### Modifications
 

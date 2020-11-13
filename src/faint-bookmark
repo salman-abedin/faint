@@ -9,6 +9,7 @@
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --bind \"$KEY_LAUNCH:accept\"
+   --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -r {})+abort+execute(faint-bookmark -b)\"
    "
 
 read -r LAST_DIR < "$LAST_PATH"
@@ -16,7 +17,7 @@ read -r LAST_DIR < "$LAST_PATH"
 case $1 in
    -a) echo "$LAST_DIR" >> "$BOOKMARKS_PATH" ;;
    -r)
-      PATH_STRING=$(sed 's/\//\\&/g' "$LAST_PATH")
+      PATH_STRING=$(echo "$2" | sed 's/\//\\&/g')
       sed -i "/$PATH_STRING/d" "$BOOKMARKS_PATH"
       ;;
    -b)

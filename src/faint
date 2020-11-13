@@ -16,21 +16,21 @@
 . faint-config
 
 DATA_PATH=$HOME/.local/share/faint
-
-export DEPTH_PATH=/tmp/FAINT_DEPTH
-export LAST_PATH=/tmp/FAINT_LAST_$$
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
-export FAINT_PID=$$
+
+export DEPTH_PATH=/tmp/FAINT_DEPTH
+export LAST_PATH=/tmp/FAINT_LAST_$$
 export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
 
-FZF_DEFAULT_OPTS="\
+export FAINT_PID=$$
+
+export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
-   --reverse --border --no-info --margin 15%,30% --no-color --header \"\" 
+   --reverse --border --no-info --margin 15%,30% --no-color --header '' 
    -m --cycle
    --bind \"$KEY_QUIT:cancel\"
-   --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
    --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
@@ -46,10 +46,10 @@ FZF_DEFAULT_OPTS="\
 
    --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -b)+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BOOKMARK_ADD:execute(faint-bookmark -a)\"
-   --bind \"$KEY_BOOKMARK_REMOVE:execute(faint-bookmark -r)\"
+
+   --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
 
    "
-export FZF_DEFAULT_OPTS
 
 FILTERING=1
 
@@ -67,13 +67,14 @@ set_filters() {
 change_root() {
    read -r LAST_DIR < "$LAST_PATH"
    cd "$LAST_DIR" || exit 1
-   exec $SHELL
+   exec "$SHELL"
 }
 
 edit() {
-   read FILE < $EDITOR_FILE_PATH
+   read -r FILE < "$EDITOR_FILE_PATH"
    $EDITOR "$FILE"
-   exec $0 -l
+   read -r LAST_DIR < "$LAST_PATH"
+   exec "$0" "$LAST_DIR"
 }
 
 init() {
@@ -87,7 +88,7 @@ process_args() {
    while :; do
       case $1 in
          -d) shift && DEPTH=$1 ;;
-         -l) read -r DEST < $FINAL_PATH ;;
+         -l) read -r DEST < "$FINAL_PATH" ;;
          -n) FILTERING=0 ;;
          *) break ;;
       esac

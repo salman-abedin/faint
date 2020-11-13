@@ -4,7 +4,7 @@
 #
 # Dpendencies:
 #              sed, awk, fzf, faint-launch, faint-config, faint-fetch-config
-#              faint-list, & faint-operate
+#              faint-list, faint-bookmark & faint-operate
 #
 # Usage: faint (launch on the current directory)
 #        faint -l (launch on the last visited directory)
@@ -28,6 +28,7 @@ FZF_DEFAULT_OPTS="\
    -m --cycle
    --bind \"$KEY_LAUNCH:reload(faint-list -l {})+clear-query\"
    --bind \"$KEY_OPERATE:clear-query+execute(faint-operate {+})+reload(faint-list -r)\"
+   --bind \"$KEY_BOOKMARK:clear-query+execute(faint-bookmarks {})+reload(faint-list -r)\"
    --bind \"$KEY_BACK:reload(faint-list -b)+clear-query\"
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:execute(kill -35 $$)+abort\"

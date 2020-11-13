@@ -21,6 +21,7 @@ export DEPTH_PATH=/tmp/FAINT_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
+export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 export FAINT_PID=$$
 export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
 
@@ -28,19 +29,25 @@ FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border --no-info --margin 15%,30% --no-color --header \"\" 
    -m --cycle
+   --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
-   --bind \"$KEY_BOOKMARK:execute(faint-bookmark)+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
-   --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
    --bind \"$KEY_EDIT:execute(faint-launch -e {})+clear-query+top\"
-   --bind \"$KEY_MARK_ALL:toggle-all\"
-   --bind \"$KEY_MARK_DOWN:toggle-down\"
-   --bind \"$KEY_MARK_UP:toggle-up\"
+
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
    --bind \"$KEY_REFRESH:reload(faint-explore -r)\"
+
+   --bind \"$KEY_MARK_ALL:toggle-all\"
+   --bind \"$KEY_MARK_DOWN:toggle-down\"
+   --bind \"$KEY_MARK_UP:toggle-up\"
+
+   --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -b)+reload(faint-explore -r)+clear-query+top\"
+   --bind \"$KEY_BOOKMARK_ADD:execute(faint-bookmark -a)\"
+   --bind \"$KEY_BOOKMARK_REMOVE:execute(faint-bookmark -r)\"
+
    "
 export FZF_DEFAULT_OPTS
 

@@ -49,7 +49,11 @@ process_args() {
       -c)
          shift
          NEW_DIR=${1#* }
-         DEST=$LAST_DIR/$NEW_DIR
+         if [ "$LAST_DIR" = / ]; then
+            DEST=$LAST_DIR$NEW_DIR
+         else
+            DEST=$LAST_DIR/$NEW_DIR
+         fi
          if ! cd "$DEST"; then
             faint-launch "$DEST"
             cd "$LAST_DIR" || exit 1

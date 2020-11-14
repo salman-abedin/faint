@@ -8,6 +8,7 @@
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
+   +m
    --bind \"$KEY_LAUNCH:accept\"
    --bind \"$KEY_BOOKMARK_BROWSE:execute(faint-bookmark -r {})+abort+execute(faint-bookmark -b)\"
    "

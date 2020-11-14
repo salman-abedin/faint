@@ -12,6 +12,7 @@ read -r LAST_DIR < "$LAST_PATH"
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
+   +m
    --bind \"$KEY_LAUNCH:accept\"
    "
 

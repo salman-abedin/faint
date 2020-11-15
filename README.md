@@ -1,6 +1,6 @@
 # faint: Extensible TUI fuzzy file explorer
 
-**faint** is a fuzzy file explorer for the CLI that supports scriptable operations & launch behaviors, Bookmarks and Icons & Emojis.
+**faint** is a fuzzy file explorer for the CLI that supports custom operations, custom launch behaviors, bookmarks and icons.
 
 ## Features
 
@@ -35,9 +35,7 @@
 git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make install
 ```
 
-## Usage
-
-### Commands
+## Commands
 
 | Command        | Effect                         |
 | -------------- | ------------------------------ |
@@ -45,24 +43,45 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `faint <PATH>` | Explore specified directory    |
 | `faint -l`     | Explore last visited directory |
 
-### Default Bindings
+## Default Bindings
 
-| Key     | Effect                                             |
-| ------- | -------------------------------------------------- |
-| `;`     | Change directory forward / launch file             |
-| `,`     | Change directory backward                          |
-| `enter` | Drops down to shell on the current directory       |
-| `esc`   | Clears the query / quits the program               |
-| `]`     | Toggle mark down                                   |
-| `[`     | Toggle mark up                                     |
-| `\`     | Toggle mark All                                    |
-| `space` | Pops open the operations menu for the marked files |
-| `'`     | Browse bookmarks / Remove selected bookmark        |
-| `"`     | Add current directory to bookmarks                 |
-| `tab`   | Navigate down                                      |
-| `btab`  | Navigate up                                        |
-| `.`     | Refresh the list                                   |
-| `:`     | Edit file using default editor                     |
+### Navigation
+
+| Key     | Effect                                       |
+| ------- | -------------------------------------------- |
+| `;`     | Changes directory forward / launch file      |
+| `,`     | Changes directory backward                   |
+| `enter` | Drops down to shell on the current directory |
+| `esc`   | Clears the query / quits the program         |
+| `tab`   | Navigates down                               |
+| `btab`  | Navigates up                                 |
+
+### Visual
+
+| Key | Effect                      |
+| --- | --------------------------- |
+| `.` | Toggles hidden files visual |
+| `=` | Increases max depth         |
+| `-` | Decreases max depth         |
+| `_` | Resets max depth            |
+| `<` | Refreshes the list          |
+
+### Operations
+
+| Key     | Effect                                        |
+| ------- | --------------------------------------------- |
+| `]`     | Toggles mark down                             |
+| `[`     | Toggles mark up                               |
+| `\`     | Toggles mark All                              |
+| `space` | Launches operations menu for the marked files |
+| `:`     | Edits file using default editor               |
+
+### Bookmarks
+
+| Key | Effect                                               |
+| --- | ---------------------------------------------------- |
+| `'` | Launches bookmark browser / Remove selected bookmark |
+| `"` | Adds current directory to bookmark list              |
 
 ### Modifications
 

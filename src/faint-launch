@@ -10,7 +10,7 @@ if [ "$1" = -e ]; then
    NEW_DIR=${2#* }
    read -r LAST_DIR < "$LAST_PATH"
    FILE=$LAST_DIR/$NEW_DIR
-   "$EDITOR" "$FILE"
+   "$EDITOR" "$FILE" || "$VISUAL" "$FILE"
    exit 0
 fi
 

@@ -30,13 +30,17 @@ KEY_MARK_DOWN=']'
 KEY_MARK_UP='['
 KEY_MARK_ALL='\\'
 
-KEY_REFRESH="."
-
 KEY_BOOKMARK_BROWSE="'"
 KEY_BOOKMARK_ADD='\"'
 
-KEY_TOGGLE_HIDDEN="="
-KEY_TOGGLE_FILTERS='-'
+KEY_TOGGLE_HIDDEN="."
+KEY_TOGGLE_FILTERS='>'
+
+KEY_REFRESH="<"
+
+KEY_DEPTH_PLUS="="
+KEY_DEPTH_MINUS="-"
+KEY_DEPTH_RESET="_"
 
 #===============================================================================
 #                             Filters

@@ -36,7 +36,10 @@ export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 export FAINT_PID=$$
 =======
 
-export DEPTH_PATH=/tmp/FAINT_DEPTH
+export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN
+export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS
+
+export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
 >>>>>>> 1e52e2e ()
 export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
@@ -67,7 +70,12 @@ export FZF_DEFAULT_OPTS="\
 
    --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
 
-   --bind \"$KEY_TOGGLE_FILTERS:execute(faint-controller -t filters)+reload(faint-explore -r)\"
+   --bind \"$KEY_TOGGLE_FILTERS:reload(faint-explore -t filters)\"
+   --bind \"$KEY_TOGGLE_HIDDEN:reload(faint-explore -t hidden)\"
+
+   --bind \"$KEY_DEPTH_PLUS:reload(faint-explore -d plus)\"
+   --bind \"$KEY_DEPTH_MINUS:reload(faint-explore -d minus)\"
+   --bind \"$KEY_DEPTH_RESET:reload(faint-explore -d reset)\"
 
    "
 
@@ -79,14 +87,18 @@ change_root() {
 
 edit() {
    read -r FILE < "$EDITOR_FILE_PATH"
-   $EDITOR "$FILE"
+   $EDITOR "$FILE" || "$VISUAL" "$FILE"
    read -r LAST_DIR < "$LAST_PATH"
    exec "$0" "$LAST_DIR"
 }
 
 init() {
    echo "$PWD" > "$LAST_PATH"
-   echo "${MAX_DEPTH}" > $DEPTH_PATH
+
+   echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
+   echo "$SHOW_HIDDEN" > $SHOW_HIDDEN_PATH
+   echo "$USE_FILTERS" > $USE_FILTERS_PATH
+
    [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
 }
 
@@ -97,15 +109,12 @@ process_args() {
    esac
 }
 
-main() {
-   process_args "$@"
-   init
+process_args "$@"
+init
 
-   trap 'change_root' RTMIN+1
-   trap 'edit' RTMIN+2
-   trap 'ns yo' RTMIN+3
+trap 'change_root' RTMIN+1
+trap 'edit' RTMIN+2
+trap 'ns yo' RTMIN+3
 
-   faint-explore "${DEST:-$PWD}" | fzf
-   mv "$LAST_PATH" "$FINAL_PATH"
-}
-main "$@"
+faint-explore "${DEST:-$PWD}" | fzf
+mv "$LAST_PATH" "$FINAL_PATH"

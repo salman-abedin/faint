@@ -35,11 +35,7 @@ init() {
    echo "$PWD" > "$LAST_PATH"
 
    if [ "$USE_FILTERS_STAT" = 1 ]; then
-      FILTERS=$(
-         faint-fetch-config "$FILTERS" -k |
-            awk '{printf "%s\\|",$0;}' |
-            sed -e 's/|\./|\\./g' -e 's/\\|$//g'
-      )
+      read -r FILTERS < "$FILTERS_PATH"
    else
       FILTERS=" "
    fi

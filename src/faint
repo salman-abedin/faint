@@ -36,12 +36,15 @@ export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 export FAINT_PID=$$
 =======
 
-export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN
-export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS
-
-export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH
 export LAST_PATH=/tmp/FAINT_LAST_$$
+<<<<<<< HEAD
 >>>>>>> 1e52e2e ()
+=======
+export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH_$$
+export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN_$$
+export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
+
+>>>>>>> 732d034 (updated the demos)
 export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
 >>>>>>> 3a8f544 ()
 
@@ -85,6 +88,14 @@ change_root() {
    exec "$SHELL"
 }
 
+set_filters() {
+   [ -f "$FILTERS_PATH" ] ||
+      faint-fetch-config "$FILTERS" -k |
+      awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > "$FILTERS_PATH"
+}
+
 edit() {
    read -r FILE < "$EDITOR_FILE_PATH"
    $EDITOR "$FILE" || "$VISUAL" "$FILE"
@@ -100,6 +111,7 @@ init() {
    echo "$USE_FILTERS" > $USE_FILTERS_PATH
 
    [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
+   set_filters
 }
 
 process_args() {

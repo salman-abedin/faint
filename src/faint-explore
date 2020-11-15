@@ -26,12 +26,28 @@ format() {
 }
 
 list() {
-   echo "$PWD" > "$LAST_PATH"
-   read -r DEPTH < "$DEPTH_PATH"
-   read -r FILTERS < "$FILTERS_PATH"
-   find . -maxdepth "$DEPTH" \
+   find . -maxdepth "$DEPTH" -name "$NAMES" \
       ! -regex ".*\($FILTERS\).*" |
       sort
+}
+
+init() {
+   echo "$PWD" > "$LAST_PATH"
+   read -r DEPTH < "$DEPTH_PATH"
+   if [ "$USE_FILTERS" = 1 ]; then
+      FILTERS=$(
+         faint-fetch-config "$FILTERS" -k |
+            awk '{printf "%s\\|",$0;}' |
+            sed -e 's/|\./|\\./g' -e 's/\\|$//g'
+      )
+   else
+      FILTERS=" "
+   fi
+   if [ "$SHOW_HIDDEN" = 1 ]; then
+      NAMES="*"
+   else
+      NAMES="[!.]*"
+   fi
 }
 
 process_args() {
@@ -46,6 +62,7 @@ process_args() {
          fi
          ;;
       -r) cd "$LAST_DIR" || exit 1 ;;
+      -t) ns yo ;;
       -c)
          shift
          NEW_DIR=${1#* }
@@ -65,6 +82,7 @@ process_args() {
 
 main() {
    process_args "$@"
+   init
    list | format
 }
 main "$@"

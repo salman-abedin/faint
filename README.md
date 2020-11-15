@@ -59,9 +59,13 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `space` | Pops open the operations menu for the marked files |
 | `'`     | Browse bookmarks / Remove selected bookmark        |
 | `"`     | Add current directory to bookmarks                 |
+| `.`     | Toggle hidden files visual                         |
+| `=`     | Increase max depth                                 |
+| `-`     | Decrease max depth                                 |
+| `_`     | Reset max depth                                    |
+| `<`     | Refresh the list                                   |
 | `tab`   | Navigate down                                      |
 | `btab`  | Navigate up                                        |
-| `.`     | Refresh the list                                   |
 | `:`     | Edit file using default editor                     |
 
 ### Modifications

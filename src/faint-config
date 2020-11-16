@@ -115,6 +115,7 @@ edit() {
 # <EXT_1|EXT_2>:<Launch_CMD/Launch_FUNCTION>;
 #-------------------------------------------------------
 LAUNCH_CMDS="\
+pdf:evince;
 mp4|mkv:mpv;
 default:edit;
 "

@@ -13,40 +13,16 @@
 . faint-config
 
 DATA_PATH=$HOME/.local/share/faint
-<<<<<<< HEAD
-
-export DEPTH_PATH=/tmp/FAINT_DEPTH
-export LAST_PATH=/tmp/FAINT_LAST_$$
-<<<<<<< HEAD
-export FINAL_PATH=/tmp/FAINT_FINAL
-export FILTERS_PATH=$HOME/.local/share/faint/FAINT_FILTERS
-=======
-=======
->>>>>>> 1e52e2e ()
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 72bd26b (fixed some minor bugs)
-=======
-=======
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
-<<<<<<< HEAD
->>>>>>> bbf9855 ()
-export FAINT_PID=$$
-=======
 
 export LAST_PATH=/tmp/FAINT_LAST_$$
-<<<<<<< HEAD
->>>>>>> 1e52e2e ()
-=======
 export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH_$$
 export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN_$$
 export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
 
->>>>>>> 732d034 (updated the demos)
 export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
->>>>>>> 3a8f544 ()
 
 export FAINT_PID=$$
 
@@ -82,20 +58,6 @@ export FZF_DEFAULT_OPTS="\
 
    "
 
-change_root() {
-   read -r LAST_DIR < "$LAST_PATH"
-   cd "$LAST_DIR" || exit 1
-   exec "$SHELL"
-}
-
-set_filters() {
-   [ -f "$FILTERS_PATH" ] ||
-      faint-fetch-config "$FILTERS" -k |
-      awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > "$FILTERS_PATH"
-}
-
 edit() {
    read -r FILE < "$EDITOR_FILE_PATH"
    $EDITOR "$FILE" || "$VISUAL" "$FILE"
@@ -103,15 +65,29 @@ edit() {
    exec "$0" "$LAST_DIR"
 }
 
-init() {
-   echo "$PWD" > "$LAST_PATH"
+change_root() {
+   read -r LAST_DIR < "$LAST_PATH"
+   cd "$LAST_DIR" || exit 1
+   exec "$SHELL"
+}
 
+init_filters() {
+   [ -f "$FILTERS_PATH" ] ||
+      faint-fetch-config "$FILTERS" -k |
+      awk '{printf "%s\\|",$0;}' |
+         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+            > "$FILTERS_PATH"
+}
+
+init_configs() {
    echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
    echo "$SHOW_HIDDEN" > $SHOW_HIDDEN_PATH
    echo "$USE_FILTERS" > $USE_FILTERS_PATH
+}
 
+init_paths() {
+   echo "$PWD" > "$LAST_PATH"
    [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
-   set_filters
 }
 
 process_args() {
@@ -122,11 +98,12 @@ process_args() {
 }
 
 process_args "$@"
-init
+init_paths
+init_filters
+init_configs
 
 trap 'change_root' RTMIN+1
 trap 'edit' RTMIN+2
-trap 'ns yo' RTMIN+3
 
 faint-explore "${DEST:-$PWD}" | fzf
 mv "$LAST_PATH" "$FINAL_PATH"

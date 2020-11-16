@@ -31,19 +31,21 @@ list() {
       sort
 }
 
-init() {
-   echo "$PWD" > "$LAST_PATH"
+change_last_path() { echo "$PWD" > "$LAST_PATH"; }
 
-   if [ "$USE_FILTERS_STAT" = 1 ]; then
-      read -r FILTERS < "$FILTERS_PATH"
-   else
-      FILTERS=" "
-   fi
-
+set_hidden_stat() {
    if [ "$SHOW_HIDDEN_STAT" = 1 ]; then
       NAMES="*"
    else
       NAMES="[!.]*"
+   fi
+}
+
+set_filters() {
+   if [ "$USE_FILTERS_STAT" = 1 ]; then
+      read -r FILTERS < "$FILTERS_PATH"
+   else
+      FILTERS=" "
    fi
 }
 
@@ -105,5 +107,7 @@ read -r SHOW_HIDDEN_STAT < "$SHOW_HIDDEN_PATH"
 read -r MAX_DEPTH_STAT < "$MAX_DEPTH_PATH"
 
 process_args "$@"
-init
+set_filters
+set_hidden_stat
+change_last_path
 list | format

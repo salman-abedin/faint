@@ -7,6 +7,7 @@
 . faint-config
 
 FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
+FILE_ARGS_PATH=/tmp/FAINT_FILE_ARGS
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -22,7 +23,17 @@ FILE_ARGS=$(
    done
 )
 
-[ -f "$FILE_LIST_PATH" ] && read -r FILE_LIST < "$FILE_LIST_PATH"
+: > "$FILE_ARGS_PATH"
+for file in "$@"; do
+   echo "$LAST_DIR/${file#* }" >> "$FILE_ARGS_PATH"
+done
+
+[ -f "$FILE_LIST_PATH" ] &&
+   FILE_LIST=$(
+      while read -r file; do
+         echo "$file"
+      done < "$FILE_LIST_PATH"
+   )
 
 CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
    CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&

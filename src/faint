@@ -5,6 +5,7 @@
 # Dpendencies:
 #              sed, awk, fzf, faint-launch, faint-config, faint-fetch-config
 #              faint-explore, faint-bookmark & faint-operate
+#              vidir (Optional)
 #
 # Usage: faint (launch on the current directory)
 #        faint <PATH> (explore certain directories)
@@ -13,6 +14,7 @@
 . faint-config
 
 DATA_PATH=$HOME/.local/share/faint
+
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
@@ -58,9 +60,15 @@ export FZF_DEFAULT_OPTS="\
 
    "
 
+rename_bulk() {
+   read -r LAST_DIR < "$LAST_PATH"
+   vidir "$LAST_DIR"
+   exec "$0" "$LAST_DIR"
+}
+
 edit() {
    read -r FILE < "$EDITOR_FILE_PATH"
-   $EDITOR "$FILE" || "$VISUAL" "$FILE"
+   $EDITOR "$FILE"
    read -r LAST_DIR < "$LAST_PATH"
    exec "$0" "$LAST_DIR"
 }
@@ -104,6 +112,7 @@ init_configs
 
 trap 'change_root' RTMIN+1
 trap 'edit' RTMIN+2
+trap 'rename_bulk' RTMIN+3
 
 faint-explore "${DEST:-$PWD}" | fzf
 mv "$LAST_PATH" "$FINAL_PATH"

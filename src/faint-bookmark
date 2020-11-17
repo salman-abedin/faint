@@ -22,10 +22,13 @@ case $1 in
       sed -i "$,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
       ;;
    -b)
-      CHOICE=$(
+      BOOKMARKS=$(
          while read -r bookmark; do
             echo "$bookmark"
-         done < "$BOOKMARKS_PATH" | fzf
+         done < "$BOOKMARKS_PATH"
+      )
+      CHOICE=$(
+         echo "$BOOKMARKS" | fzf
       ) &&
          echo "$CHOICE" > "$LAST_PATH"
       ;;

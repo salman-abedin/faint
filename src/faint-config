@@ -61,7 +61,7 @@ yarn.lock;
 #===============================================================================
 
 # Variable Conventions
-#     FILE_ARGS      = Files selected for operation ( ⁉ Has to be unquoted )
+#     FILE_ARGS      = Files selected for operation ( ⁉ Has to be quoted )
 #     FILE_LIST      = Files tracked for consecutive operations
 #     FILE_LIST_PATH = PATH for tracking files
 #     LAST_DIR       = Current path
@@ -69,20 +69,50 @@ yarn.lock;
 #---------------------------------------
 # Operation Functions
 #---------------------------------------
-delete() { rm -fr $FILE_ARGS; }
-trash() { mv $FILE_ARGS "$TRASH"; }
-yank() { echo $FILE_ARGS | xsel -b && echo $FILE_ARGS > "$FILE_LIST_PATH"; }
-paste() { cp -br $FILE_LIST "$LAST_DIR"; }
-move() { mv $FILE_LIST "$LAST_DIR"; }
-link_soft() { cp -frs $FILE_LIST "$LAST_DIR"; }
-link_hard() { cp -frl $FILE_LIST "$LAST_DIR"; }
+delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
+trash() { echo "$FILE_ARGS" | while read -r file; do mv "$file" "$TRASH"; done; }
+paste() {
+   echo "$FILE_LIST" |
+      while read -r file; do
+         cp -br "$file" "$LAST_DIR"
+      done
+}
+move() {
+   echo "$FILE_LIST" |
+      while read -r file; do
+         mv "$file" "$LAST_DIR"
+      done
+}
+link_soft() {
+   echo "$FILE_LIST" |
+      while read -r file; do
+         cp -frs "$file" "$LAST_DIR"
+      done
+}
+link_hard() {
+   echo "$FILE_LIST" |
+      while read -r file; do
+         cp -frl "$file" "$LAST_DIR"
+      done
+}
+own() {
+   echo "$FILE_ARGS" |
+      while read -r file; do
+         sudo -n chown -R "$USER" "$file"
+      done
+}
 tmux_pane() {
-   tmux split-window -h "$EDITOR $FILE_ARGS" \; \
+   tmux split-window -h "launch -f $FILE_ARGS" \; \
       swap-pane -d -t :.1 \; \
       select-layout main-vertical
 }
-own() {
-   sudo -n chown -R "$USER" $FILE_ARGS
+yank() {
+   echo "$FILE_ARGS" | xsel -b
+   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+}
+rename_bulk() {
+   kill -37 "$FAINT_PID"
+   pkill -P "$FAINT_PID"
 }
 
 #---------------------------------------
@@ -90,14 +120,15 @@ own() {
 #---------------------------------------
 OPS="\
 💻 Tmux:tmux_pane;
-⚔ Trash:trash;
+⚔  Trash:trash;
 ❌ Delete:delete;
-© Yank:yank;
-🖌 Paste:paste;
+©  Yank:yank;
+🖌  Paste:paste;
 🚚 Move:move;
-🗞 Soft Link:link_soft;
+🗞  Soft Link:link_soft;
 🌴 Hard Link:link_hard;
 😎 Own:own;
+🏷  Bulk Rename:rename_bulk;
 "
 
 #===============================================================================
@@ -114,7 +145,7 @@ edit() {
    kill -36 "$FAINT_PID"
    pkill -P "$FAINT_PID"
 }
-browse() { read -r LINK < "$1" && "$BROWSER" "$LINK"; }
+browse() { read -r LINK < "$1" && falkon "$LINK"; }
 view_image() { feh --keep-zoom-vp -B 'black' -d --edit --start-at "$1"; }
 
 #-------------------------------------------------------

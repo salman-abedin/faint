@@ -24,6 +24,7 @@
 
 -  [fzf](https://github.com/junegunn/fzf)
 -  `find, sort, sed & awk`
+-  [vidir](https://github.com/trapd00r/vidir) (Optional; For bulk renaming)
 
 ## Installation
 

@@ -21,7 +21,6 @@ KEY_OPERATE='space'
 KEY_QUIT='esc'
 
 KEY_SHELL='enter'
-KEY_EDIT=":"
 
 KEY_UP='btab'
 KEY_DOWN='tab'
@@ -101,11 +100,6 @@ own() {
          sudo -n chown -R "$USER" "$file"
       done
 }
-tmux_pane() {
-   tmux split-window -h "launch -f $FILE_ARGS" \; \
-      swap-pane -d -t :.1 \; \
-      select-layout main-vertical
-}
 yank() {
    echo "$FILE_ARGS" | xsel -b
    echo "$FILE_ARGS" > "$FILE_LIST_PATH"
@@ -119,7 +113,6 @@ rename_bulk() {
 # <OPERATION_NAME>:<OPERATION_FUNCTION>;
 #---------------------------------------
 OPS="\
-💻 Tmux:tmux_pane;
 ⚔  Trash:trash;
 ❌ Delete:delete;
 ©  Yank:yank;
@@ -135,29 +128,15 @@ OPS="\
 #                             Launching
 #===============================================================================
 
-#---------------------------------------
-# Launch Functions
-#---------------------------------------
-
-# Use "$1" for referencing the file
-edit() {
-   echo "$1" > "$EDITOR_FILE_PATH"
-   kill -36 "$FAINT_PID"
-   pkill -P "$FAINT_PID"
+execute() {
+   case ${1##*.} in
+      # <EXT1> | <EXT2 | ...) <CMD>;;
+      mp4 | mkv | gif) mpv "$1" ;;
+      # default
+      *) $EDITOR "$1" ;;
+   esac
 }
-browse() { read -r LINK < "$1" && falkon "$LINK"; }
-view_image() { feh --keep-zoom-vp -B 'black' -d --edit --start-at "$1"; }
 
-#-------------------------------------------------------
-# <EXT_1|EXT_2>:<Launch_CMD/Launch_FUNCTION>;
-#-------------------------------------------------------
-LAUNCH_CMDS="\
-png|jpg|jpeg:view_image;
-url:browse;
-pdf:evince;
-mp4|mkv:mpv;
-default:edit;
-"
 #===============================================================================
 #                               Icons
 #===============================================================================

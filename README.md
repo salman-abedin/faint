@@ -71,7 +71,6 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | `[`     | Toggles mark up                               |
 | `\`     | Toggles mark All                              |
 | `space` | Launches operations menu for the marked files |
-| `:`     | Edits file using default editor               |
 
 ### Bookmarks
 

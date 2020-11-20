@@ -24,7 +24,7 @@ export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH_$$
 export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN_$$
 export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
 
-export EDITOR_FILE_PATH=/tmp/FAINT_EDITOR_FILE
+export LAUNCH_FILE_PATH=/tmp/FAINT_FILE_FILE
 
 export FAINT_PID=$$
 
@@ -36,7 +36,6 @@ export FZF_DEFAULT_OPTS="\
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
    --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
-   --bind \"$KEY_EDIT:execute(faint-launch -e {})+clear-query+top\"
 
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
@@ -66,9 +65,9 @@ rename_bulk() {
    exec "$0" "$LAST_DIR"
 }
 
-edit() {
-   read -r FILE < "$EDITOR_FILE_PATH"
-   $EDITOR "$FILE"
+launch() {
+   read -r FILE < "$LAUNCH_FILE_PATH"
+   execute "$FILE"
    read -r LAST_DIR < "$LAST_PATH"
    exec "$0" "$LAST_DIR"
 }
@@ -111,7 +110,7 @@ init_filters
 init_configs
 
 trap 'change_root' RTMIN+1
-trap 'edit' RTMIN+2
+trap 'launch' RTMIN+2
 trap 'rename_bulk' RTMIN+3
 
 faint-explore "${DEST:-$PWD}" | fzf

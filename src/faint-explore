@@ -1,8 +1,4 @@
 #!/bin/sh
-#
-# Helper script for faint; lists file and formats the view
-#
-# Dependencie: find, sort, faint-launch, faint-config & faint-fetch-config
 
 . faint-config
 
@@ -94,7 +90,9 @@ process_args() {
             DEST=$LAST_DIR/$NEW_DIR
          fi
          if ! cd "$DEST"; then
-            faint-launch "$DEST"
+            echo "$DEST" > "$LAUNCH_FILE_PATH"
+            kill -36 "$FAINT_PID"
+            pkill -P "$FAINT_PID"
             cd "$LAST_DIR" || exit 1
          fi
          ;;

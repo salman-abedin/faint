@@ -1,7 +1,4 @@
 #!/bin/sh
-#
-# Config file for faint
-# Dependencies: pkill
 
 #===============================================================================
 #                             Default Settings
@@ -21,7 +18,6 @@ KEY_OPERATE='space'
 KEY_QUIT='esc'
 
 KEY_SHELL='enter'
-KEY_EDIT=":"
 
 KEY_UP='btab'
 KEY_DOWN='tab'
@@ -33,8 +29,8 @@ KEY_MARK_ALL='\\'
 KEY_BOOKMARK_BROWSE="'"
 KEY_BOOKMARK_ADD='\"'
 
-KEY_TOGGLE_HIDDEN="."
-KEY_TOGGLE_FILTERS='>'
+KEY_TOGGLE_HIDDEN=">"
+KEY_TOGGLE_FILTERS='.'
 
 KEY_REFRESH="<"
 
@@ -46,29 +42,20 @@ KEY_DEPTH_RESET="_"
 #                             Filters
 #===============================================================================
 
-#---------------------------------------
-# <FILE>/<FOLDER;
-#---------------------------------------
 FILTERS="\
 node_modules;
 package-lock.json;
 yarn.lock;
 .git;
+package.json;
+tsconfig.json;
+build;
 "
 
 #===============================================================================
 #                             Operations
 #===============================================================================
 
-# Variable Conventions
-#     FILE_ARGS      = Files selected for operation ( ⁉ Has to be quoted )
-#     FILE_LIST      = Files tracked for consecutive operations
-#     FILE_LIST_PATH = PATH for tracking files
-#     LAST_DIR       = Current path
-
-#---------------------------------------
-# Operation Functions
-#---------------------------------------
 delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
 trash() { echo "$FILE_ARGS" | while read -r file; do mv "$file" "$TRASH"; done; }
 paste() {
@@ -115,9 +102,6 @@ rename_bulk() {
    pkill -P "$FAINT_PID"
 }
 
-#---------------------------------------
-# <OPERATION_NAME>:<OPERATION_FUNCTION>;
-#---------------------------------------
 OPS="\
 💻 Tmux:tmux_pane;
 ⚔  Trash:trash;
@@ -128,43 +112,13 @@ OPS="\
 🗞  Soft Link:link_soft;
 🌴 Hard Link:link_hard;
 😎 Own:own;
-🏷  Bulk Rename:rename_bulk;
+🏷  Rename Bulk:rename_bulk;
 "
 
-#===============================================================================
-#                             Launching
-#===============================================================================
-
-#---------------------------------------
-# Launch Functions
-#---------------------------------------
-
-# Use "$1" for referencing the file
-edit() {
-   echo "$1" > "$EDITOR_FILE_PATH"
-   kill -36 "$FAINT_PID"
-   pkill -P "$FAINT_PID"
-}
-browse() { read -r LINK < "$1" && falkon "$LINK"; }
-view_image() { feh --keep-zoom-vp -B 'black' -d --edit --start-at "$1"; }
-
-#-------------------------------------------------------
-# <EXT_1|EXT_2>:<Launch_CMD/Launch_FUNCTION>;
-#-------------------------------------------------------
-LAUNCH_CMDS="\
-png|jpg|jpeg:view_image;
-url:browse;
-pdf:evince;
-mp4|mkv:mpv;
-default:edit;
-"
 #===============================================================================
 #                               Icons
 #===============================================================================
 
-#---------------------------------------
-# <EXT_1|EXT_2|...>:<ICON>;
-#---------------------------------------
 ICONS="\
 dir:📁;
 file:📃;

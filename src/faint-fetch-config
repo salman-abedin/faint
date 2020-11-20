@@ -1,8 +1,4 @@
 #!/bin/sh
-#
-# Helper script for faint: fetches the relevant configs
-#
-# Dependency: Milky pure baby!
 
 CURRENT_IFS=$IFS
 IFS=$(printf ';')

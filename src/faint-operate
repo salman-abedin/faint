@@ -1,8 +1,4 @@
 #!/bin/sh
-#
-# Helper script for faint. Allows misc operations on files
-#
-# Dependencies: fzf, faint-config & faint-fetch-config
 
 . faint-config
 
@@ -22,11 +18,6 @@ FILE_ARGS=$(
       echo "$LAST_DIR/${file#* }"
    done
 )
-
-: > "$FILE_ARGS_PATH"
-for file in "$@"; do
-   echo "$LAST_DIR/${file#* }" >> "$FILE_ARGS_PATH"
-done
 
 [ -f "$FILE_LIST_PATH" ] &&
    FILE_LIST=$(

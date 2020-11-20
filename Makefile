@@ -8,9 +8,7 @@ install: clean
 		done
 	@echo Done installing the executable files.
 uninstall:
-	@for script in src/*;do \
-		rm -f $(BIN_DIR)/$${script#src/}; \
-		done
+	@for script in src/*;do rm -f $(BIN_DIR)/$${script#src/}; done
 	@echo Done removing executable files.
 clean:
 	@rm -f ~/.local/share/faint/FAINT_FILTERS

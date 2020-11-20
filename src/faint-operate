@@ -1,9 +1,10 @@
 #!/bin/sh
+#
+# Helper script for faint. Allows misc operations on files
+#
+# Dependencies: fzf, faint-config & faint-fetch-config
 
 . faint-config
-
-FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
-FILE_ARGS_PATH=/tmp/FAINT_FILE_ARGS
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

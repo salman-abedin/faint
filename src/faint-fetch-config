@@ -1,17 +1,19 @@
 #!/bin/sh
+#
+# Helper script for faint: fetches the relevant configs
+#
+# Dependency: Milky pure baby!
 
 CURRENT_IFS=$IFS
 IFS=$(printf ';')
-SRC=$1
-shift
-for line in $SRC; do
-   case $1 in
-      -k) printf "%s" "${line%:*}" ;;
+for line in $1; do
+   case $2 in
       -v)
          case $line in
-            *"$2"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
+            *"$3"*) TEMP=${line%;*} && echo "${TEMP#*:}" && break ;;
          esac
          ;;
+      -k) printf "%s" "${line%:*}" ;;
    esac
 done
 IFS=$CURRENT_IFS

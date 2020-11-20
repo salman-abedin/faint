@@ -1,22 +1,24 @@
 #!/bin/sh
+#
+# A fuzzy file explorer
+#
+# Dpendencies:
+#              sed, awk, fzf, faint-launch, faint-config,
+#              faint-fetch-config, faint-explore, faint-bookmark & faint-operate
+#              vidir (Optional)
+#
+# Usage: faint (launch on the current directory)
+#        faint <PATH> (explore certain directories)
+#        faint -l (launch on the last visited directory)
 
 . faint-config
 
 DATA_PATH=$HOME/.local/share/faint
-
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 
-export LAST_PATH=/tmp/FAINT_LAST_$$
-export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH_$$
-export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN_$$
-export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
-
-export LAUNCH_FILE_PATH=/tmp/FAINT_FILE_FILE
-
 export FAINT_PID=$$
-
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border --no-info --margin 15%,30% --no-color --header ''
@@ -48,29 +50,33 @@ export FZF_DEFAULT_OPTS="\
 
    "
 
-_help_rename_bulk() {
-   ns yo
+export LAST_PATH=/tmp/FAINT_LAST_$$
+export MAX_DEPTH_PATH=/tmp/FAINT_MAX_DEPTH_$$
+export SHOW_HIDDEN_PATH=/tmp/FAINT_SHOW_HIDDEN_$$
+export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
+
+export LAUNCH_FILE_PATH=/tmp/FAINT_FILE_FILE
+export FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
+
+cleanup() {
+   rm -f \
+      $LAST_PATH \
+      $MAX_DEPTH_PATH \
+      $SHOW_HIDDEN_PATH \
+      $USE_FILTERS_PATH \
+      $LAUNCH_FILE_PATH \
+      $FILE_LIST_PATH
 }
 
-rename_bulk() {
+bulk_move() {
    read -r LAST_DIR < "$LAST_PATH"
-
-   cd "$LAST_DIR"
-   for file in * .*; do
-      [ "$file" = . ] || [ "$file" = .. ] && continue
-      echo "$file"
-   done > ~/list
-   echo ~/list > "$LAUNCH_FILE_PATH"
-   kill -38 "$FAINT_PID"
-   pkill -P "$FAINT_PID"
-   # cd "$LAST_DIR" || exit 1
-   # vidir "$LAST_DIR"
-   # exec "$0" "$LAST_DIR"
+   /usr/local/bin/hulk "$LAST_DIR"
+   exec "$0" "$LAST_DIR"
 }
 
 launch() {
    read -r FILE < "$LAUNCH_FILE_PATH"
-   /usr/local/bin/launch -f "$FILE"
+   execute "$FILE"
    read -r LAST_DIR < "$LAST_PATH"
    exec "$0" "$LAST_DIR"
 }
@@ -114,8 +120,8 @@ init_configs
 
 trap 'change_root' RTMIN+1
 trap 'launch' RTMIN+2
-trap 'rename_bulk' RTMIN+3
-trap '_help_rename_bulk' RTMIN+4
+trap 'bulk_move' RTMIN+3
+trap 'cleanup' INT TERM QUIT EXIT
 
 faint-explore "${DEST:-$PWD}" | fzf
 mv "$LAST_PATH" "$FINAL_PATH"

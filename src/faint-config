@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Config file for faint
+#
+# Dependencies: setsid (Optional; For better launching experience)
 
 #===============================================================================
 #                             Default Settings
@@ -29,8 +33,8 @@ KEY_MARK_ALL='\\'
 KEY_BOOKMARK_BROWSE="'"
 KEY_BOOKMARK_ADD='\"'
 
-KEY_TOGGLE_HIDDEN=">"
-KEY_TOGGLE_FILTERS='.'
+KEY_TOGGLE_HIDDEN="."
+KEY_TOGGLE_FILTERS='>'
 
 KEY_REFRESH="<"
 
@@ -42,22 +46,26 @@ KEY_DEPTH_RESET="_"
 #                             Filters
 #===============================================================================
 
+#----------------------------------------------
+# <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
+#----------------------------------------------
 FILTERS="\
 node_modules;
 package-lock.json;
 yarn.lock;
 .git;
-package.json;
-tsconfig.json;
-build;
 "
 
 #===============================================================================
 #                             Operations
 #===============================================================================
 
-delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
 trash() { echo "$FILE_ARGS" | while read -r file; do mv "$file" "$TRASH"; done; }
+delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
+yank() {
+   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+   echo "$FILE_ARGS" | xsel -b 2> /dev/null
+}
 paste() {
    echo "$FILE_LIST" |
       while read -r file; do
@@ -67,53 +75,35 @@ paste() {
 move() {
    echo "$FILE_LIST" |
       while read -r file; do
-         mv "$file" "$LAST_DIR"
+         mv -f "$file" "$LAST_DIR"
       done
 }
-link_soft() {
-   echo "$FILE_LIST" |
-      while read -r file; do
-         cp -frs "$file" "$LAST_DIR"
-      done
-}
-link_hard() {
-   echo "$FILE_LIST" |
-      while read -r file; do
-         cp -frl "$file" "$LAST_DIR"
-      done
-}
-own() {
-   echo "$FILE_ARGS" |
-      while read -r file; do
-         sudo -n chown -R "$USER" "$file"
-      done
-}
-tmux_pane() {
-   tmux split-window -h "launch -f $FILE_ARGS" \; \
-      swap-pane -d -t :.1 \; \
-      select-layout main-vertical
-}
-yank() {
-   echo "$FILE_ARGS" | xsel -b
-   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
-}
-rename_bulk() {
-   kill -37 "$FAINT_PID"
-   pkill -P "$FAINT_PID"
-}
+bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 
 OPS="\
-💻 Tmux:tmux_pane;
 ⚔  Trash:trash;
 ❌ Delete:delete;
 ©  Yank:yank;
 🖌  Paste:paste;
 🚚 Move:move;
-🗞  Soft Link:link_soft;
-🌴 Hard Link:link_hard;
-😎 Own:own;
-🏷  Rename Bulk:rename_bulk;
+🏷  Bulk_Move:bulk_move;
 "
+
+#===============================================================================
+#                             Launching
+#===============================================================================
+
+# Helper function: Forks & suppresses the output of a given commmand
+fork() { setsid -f "$@" > /dev/null 2>&1 & }
+
+execute() {
+   case ${1##*.} in
+      # <EXT1> | <EXT2 | ...) <CMD>;;
+      mp4 | mkv | gif) fork mpv "$1" ;;
+      # default
+      *) $EDITOR "$1" ;;
+   esac
+}
 
 #===============================================================================
 #                               Icons
@@ -123,15 +113,9 @@ ICONS="\
 dir:📁;
 file:📃;
 link:⛓;
-iso|img:📀;
-png|ico:🖼;
-jpg|jpeg:📸;
-part:💔;
-json:📒;
 md:📘;
-tex:📜;
-css|sass|scss:🎨;
-html|pug|url:🌎;
 pdf|epub:📚;
 mp4|mkv:🎥;
+jpg|jpeg:📸;
+png|ico:🖼;
 "

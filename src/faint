@@ -40,6 +40,7 @@ export FZF_DEFAULT_OPTS="\
    --bind \"$KEY_BOOKMARK_ADD:execute(faint-bookmark -a)\"
 
    --bind \"$KEY_LAUNCH:reload(faint-explore -c {})+clear-query+top\"
+   --bind \"$KEY_RUN:execute(faint-explore -l {})\"
 
    --bind \"$KEY_TOGGLE_FILTERS:reload(faint-explore -t filters)\"
    --bind \"$KEY_TOGGLE_HIDDEN:reload(faint-explore -t hidden)\"

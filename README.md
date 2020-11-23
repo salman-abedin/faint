@@ -45,16 +45,17 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ### Navigation
 
-| Key     | Effect                                       |
-| ------- | -------------------------------------------- |
-| `;`     | Changes directory forward / launch file      |
-| `,`     | Changes directory backward                   |
-| `enter` | Drops down to shell on the current directory |
-| `esc`   | Clears the query / quits the program         |
-| `tab`   | Navigates down                               |
-| `btab`  | Navigates up                                 |
+| Key     | Effect                                                          |
+| ------- | --------------------------------------------------------------- |
+| `;`     | Changes directory forward / launch file                         |
+| `:`     | Launches file without clearing queries or reseting the position |
+| `,`     | Changes directory backward                                      |
+| `enter` | Drops down to shell on the current directory                    |
+| `esc`   | Clears the query / quits the program                            |
+| `tab`   | Navigates down                                                  |
+| `btab`  | Navigates up                                                    |
 
-### Visual
+### List
 
 | Key | Effect                      |
 | --- | --------------------------- |

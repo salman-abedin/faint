@@ -6,19 +6,19 @@
 
 -  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation.
 
-![](demo/basics.gif)
+![](demos/basics.gif)
 
 -  ### Custom Operations & Launch Behaviors
 
-![](demo/scripting.gif)
+![](demos/scripting.gif)
 
 -  ### Filters
 
-![](demo/filtering.gif)
+![](demos/filtering.gif)
 
 -  ### Bookmarking & Multiple Instances
 
-![](demo/bookmarking.gif)
+![](demos/bookmarking.gif)
 
 ## Dependencies
 
@@ -48,7 +48,7 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 | Key     | Effect                                                    |
 | ------- | --------------------------------------------------------- |
 | `;`     | `cd` into directory/launch file + resets query & position |
-| `:`     | Launches file without reseting the query & position       |
+| `:`     | Launches file without resetting the query & position      |
 | `,`     | Changes directory backward                                |
 | `enter` | Drops down to shell on the current directory              |
 | `esc`   | Clears the query / quits the program                      |

@@ -100,6 +100,11 @@ cd faint
 sudo make uninstall
 ```
 
+## Contributors
+
+-  [orhun](https://github.com/orhun) ( AUR package maintainer)
+-  [NICHOLAS85](https://github.com/NICHOLAS85)
+
 ---
 
 ## Shameful Plug

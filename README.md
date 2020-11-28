@@ -67,13 +67,14 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 
 ### List
 
-| Key | Effect                      |
-| --- | --------------------------- |
-| `.` | Toggles hidden files visual |
-| `=` | Increases max depth         |
-| `-` | Decreases max depth         |
-| `_` | Resets max depth            |
-| `<` | Refreshes the list          |
+| Key | Effect                        |
+| --- | ----------------------------- |
+| `.` | Toggles filtered files visual |
+| `>` | Toggles hidden files visual   |
+| `=` | Increases max depth           |
+| `-` | Decreases max depth           |
+| `_` | Resets max depth              |
+| `<` | Refreshes the list            |
 
 ### Operations
 

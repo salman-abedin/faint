@@ -7,9 +7,10 @@
 #              faint-fetch-config, faint-explore, faint-bookmark & faint-operate
 #              vidir (Optional)
 #
-# Usage: faint (launch on the current directory)
-#        faint <PATH> (explore certain directories)
-#        faint -l (launch on the last visited directory)
+# Usage: faint (explores the current directory)
+#        faint DIR (explores specified directory)
+#        faint -l (explores the last visited directory)
+#        faint -h (shows help)
 
 . faint-config
 
@@ -58,6 +59,18 @@ export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
 
 export LAUNCH_FILE_PATH=/tmp/FAINT_FILE_FILE
 export FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
+
+help() {
+   while IFS= read -r line; do
+      echo "$line"
+   done << eof
+Usage: faint
+   or: faint DIR
+   or: faint -l
+Launch faint on the current directory, on a specified directory or the last visited directory.
+eof
+   exit
+}
 
 cleanup() {
    rm -f \
@@ -110,6 +123,7 @@ init_paths() {
 process_args() {
    case $1 in
       -l) read -r DEST < "$FINAL_PATH" ;;
+      -h) help ;;
       *) DEST=$1 ;;
    esac
 }

@@ -10,15 +10,15 @@ format() {
    while read -r file; do
       [ "$file" = . ] && continue
       if [ -d "$file" ]; then
-         PREFIX=$(faint-fetch-config "$ICONS" -v dir)
+         PREFIX=$(faint-fetch-config "$ICONS" -v DIR)
       elif [ -L "$file" ]; then
-         PREFIX=$(faint-fetch-config "$ICONS" -v link)
+         PREFIX=$(faint-fetch-config "$ICONS" -v LINK)
       else
          ICON=$(faint-fetch-config "$ICONS" -v "${file##*.}")
          if [ -n "$ICON" ]; then
             PREFIX=$ICON
          else
-            PREFIX=$(faint-fetch-config "$ICONS" -v file)
+            PREFIX=$(faint-fetch-config "$ICONS" -v FILE)
          fi
       fi
       echo "$PREFIX ${file#./}"

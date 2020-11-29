@@ -80,6 +80,7 @@ move() {
       done
 }
 bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
+make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 
 OPS="\
 ⚔  Trash:trash;
@@ -87,7 +88,8 @@ OPS="\
 ©  Yank:yank;
 🖌  Paste:paste;
 🚚 Move:move;
-🏷  Bulk_Move:bulk_move;
+🏷  Rename:bulk_move;
+📁 Create Directory:make_dir;
 "
 
 #===============================================================================
@@ -99,7 +101,7 @@ fork() { setsid -f "$@" > /dev/null 2>&1 & }
 
 execute() {
    case ${1##*.} in
-      # <EXT1> | <EXT2 | ...) <CMD>;;
+      # <EXT1> | <EXT2 | ...) <CMD> "$1";;
       mp4 | mkv | gif) fork mpv "$1" ;;
       # default
       *) $EDITOR "$1" ;;
@@ -111,9 +113,9 @@ execute() {
 #===============================================================================
 
 ICONS="\
-dir:📁;
-file:📃;
-link:⛓;
+DIR:📁;
+FILE:📃;
+LINK:⛓;
 md:📘;
 pdf|epub:📚;
 mp4|mkv:🎥;

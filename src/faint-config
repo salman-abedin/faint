@@ -80,6 +80,7 @@ move() {
       done
 }
 bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
+make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 
 OPS="\
 ⚔  Trash:trash;
@@ -87,7 +88,8 @@ OPS="\
 ©  Yank:yank;
 🖌  Paste:paste;
 🚚 Move:move;
-🏷  Bulk_Move:bulk_move;
+🏷  Rename:bulk_move;
+📁 Create Directory:make_dir;
 "
 
 #===============================================================================

@@ -82,6 +82,16 @@ cleanup() {
       $FILE_LIST_PATH
 }
 
+make_dir() {
+   echo What it is called?
+   read -r NAME
+   read -r LAST_DIR < "$LAST_PATH"
+   mkdir -p "$LAST_DIR/$NAME"
+   cd "$LAST_DIR/$NAME"
+   : > "$LAST_DIR/$NAME/delete_me_afterwards"
+   exec "$0" "$LAST_DIR/$NAME"
+}
+
 bulk_move() {
    read -r LAST_DIR < "$LAST_PATH"
    /usr/local/bin/hulk "$LAST_DIR"
@@ -136,6 +146,7 @@ init_configs
 trap 'change_root' RTMIN+1
 trap 'launch' RTMIN+2
 trap 'bulk_move' RTMIN+3
+trap 'make_dir' RTMIN+4
 trap 'cleanup' INT TERM QUIT EXIT
 
 faint-explore "${DEST:-$PWD}" | fzf

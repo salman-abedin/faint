@@ -13,9 +13,9 @@
 #        faint -h (shows help)
 
 if [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config" ]; then
-  source "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config"
+  . "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config"
 else
-  source /usr/share/faint/faint-config
+  . /usr/share/faint/faint-config
 fi
 
 DATA_PATH="${XDG_DATA_HOME:-$HOME/.local/share}/faint"

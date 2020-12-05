@@ -6,15 +6,27 @@
 
 -  ### Fuzzy Finding & Depth Searching.
 
--  ### Custom Operations & Launch Behaviors
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-fuzzy.gif)
+
+-  ### Custom Operations
+
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-op.gif)
+
+-  ### Custom Launch Behaviors
+
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-launch.gif)
 
 -  ### Filters
 
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-filters.gif)
+
 -  ### Bookmarking
+
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-bookmark.gif)
 
 -  ### Multiple Instances
 
-![](demo.gif)
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-multi.gif)
 
 ## Dependencies
 

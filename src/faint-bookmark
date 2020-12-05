@@ -23,9 +23,10 @@ case $1 in
       ;;
    -b)
       BOOKMARKS=$(
-         while read -r bookmark; do
-            echo "$bookmark"
-         done < "$BOOKMARKS_PATH"
+         [ -f "$BOOKMARKS_PATH" ] &&
+            while read -r bookmark; do
+               echo "$bookmark"
+            done < "$BOOKMARKS_PATH"
       )
       CHOICE=$(
          echo "$BOOKMARKS" | fzf

@@ -4,21 +4,17 @@
 
 ## Features
 
--  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation.
-
-![](demos/basics.gif)
+-  ### Fuzzy Finding & Depth Searching.
 
 -  ### Custom Operations & Launch Behaviors
 
-![](demos/scripting.gif)
-
 -  ### Filters
 
-![](demos/filtering.gif)
+-  ### Bookmarking
 
--  ### Bookmarking & Multiple Instances
+-  ### Multiple Instances
 
-![](demos/bookmarking.gif)
+![](demo.gif)
 
 ## Dependencies
 
@@ -29,18 +25,18 @@
 
 ## Installation
 
+#### Git
+
+```sh
+git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make install
+```
+
 #### AUR
 
 ```sh
 yay -S --noconfirm faint
 # Or
 yay -S --noconfirm faint-git # Nightly
-```
-
-#### Git
-
-```sh
-git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make install
 ```
 
 ## Commands
@@ -98,6 +94,8 @@ git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make in
 -  `sudo make install` after making changes
 
 ## Update
+
+#### Git
 
 ```sh
 cd faint

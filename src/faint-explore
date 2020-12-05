@@ -4,7 +4,11 @@
 #
 # Dependencie: find, sort, pkill, faint-launch, faint-config & faint-fetch-config
 
-. faint-config
+if [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config" ]; then
+  source "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config"
+else
+  source /usr/share/faint/faint-config
+fi
 
 format() {
    while read -r file; do

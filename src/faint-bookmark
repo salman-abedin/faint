@@ -4,7 +4,11 @@
 #
 # Dependencies: fzf, sed, faint-config & faint-fetch-config
 
-. faint-config
+if [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config" ]; then
+  source "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config"
+else
+  source /usr/share/faint/faint-config
+fi
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

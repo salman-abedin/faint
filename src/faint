@@ -12,9 +12,13 @@
 #        faint -l (explores the last visited directory)
 #        faint -h (shows help)
 
-. faint-config
+if [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config" ]; then
+  source "${XDG_CONFIG_HOME:-$HOME/.config}/faint/config"
+else
+  source /usr/share/faint/faint-config
+fi
 
-DATA_PATH=$HOME/.local/share/faint
+DATA_PATH="${XDG_DATA_HOME:-$HOME/.local/share}/faint"
 export FINAL_PATH=$DATA_PATH/FAINT_FINAL
 export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS

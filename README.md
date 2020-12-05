@@ -4,21 +4,17 @@
 
 ## Features
 
--  ### Fuzzy Finding, Depth Searching & Forward-Backward Navigation.
-
-![](demos/basics.gif)
+-  ### Fuzzy Finding & Depth Searching.
 
 -  ### Custom Operations & Launch Behaviors
 
-![](demos/scripting.gif)
-
 -  ### Filters
 
-![](demos/filtering.gif)
+-  ### Bookmarking
 
--  ### Bookmarking & Multiple Instances
+-  ### Multiple Instances
 
-![](demos/bookmarking.gif)
+![](demo.gif)
 
 ## Dependencies
 

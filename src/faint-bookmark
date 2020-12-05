@@ -19,7 +19,7 @@ case $1 in
    -a) echo "$LAST_DIR" >> "$BOOKMARKS_PATH" ;;
    -r)
       PATH_STRING=$(echo "$2" | sed 's/\//\\&/g')
-      sed -i "$,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
+      sed -i "0,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
       ;;
    -b)
       BOOKMARKS=$(

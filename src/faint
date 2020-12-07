@@ -22,7 +22,7 @@ export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 export FAINT_PID=$$
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
-   --reverse --border --no-info --margin 15%,30% --no-color --header ''
+   --reverse --border --no-info --margin $MARGIN_TOP_BOTTOM%,$MARGIN_LEFT_RIGHT% --no-color --header ''
    -m --cycle
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"

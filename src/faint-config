@@ -15,6 +15,8 @@ MAX_DEPTH=1
 MARGIN_TOP_BOTTOM=10 # 0 - 49 
 MARGIN_LEFT_RIGHT=20 # 0 - 49
 
+TRASH_DIR=~/.local/share/Trash
+
 #===============================================================================
 # Bindings ( ⁉ has to be a single character!) [ More on fzf man page ]
 #===============================================================================
@@ -66,7 +68,7 @@ Makefile;
 #                             Operations
 #===============================================================================
 
-trash() { echo "$FILE_ARGS" | while read -r file; do mv "$file" "$TRASH"; done; }
+trash() { echo "$FILE_ARGS" | while read -r file; do mv -f "$file" "$TRASH_DIR"; done; }
 delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
 yank() {
    echo "$FILE_ARGS" > "$FILE_LIST_PATH"

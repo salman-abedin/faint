@@ -1,16 +1,4 @@
 #!/bin/sh
-#
-# A fuzzy file explorer
-#
-# Dpendencies:
-#              sed, awk, fzf, faint-launch, faint-config,
-#              faint-fetch-config, faint-explore, faint-bookmark & faint-operate
-#              vidir (Optional)
-#
-# Usage: faint (explores the current directory)
-#        faint DIR (explores specified directory)
-#        faint -l (explores the last visited directory)
-#        faint -h (shows help)
 
 . faint-config
 
@@ -23,7 +11,7 @@ export FAINT_PID=$$
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border --no-info --margin $MARGIN_TOP_BOTTOM%,$MARGIN_LEFT_RIGHT% --no-color --header ''
-   -m --cycle
+   --multi --cycle
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
@@ -60,18 +48,6 @@ export USE_FILTERS_PATH=/tmp/FAINT_USE_FILTERS_$$
 export LAUNCH_FILE_PATH=/tmp/FAINT_FILE_FILE
 export FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
 
-help() {
-   while IFS= read -r line; do
-      echo "$line"
-   done << eof
-Usage: faint
-   or: faint DIR
-   or: faint -l
-Launch faint on the current directory, on a specified directory or the last visited directory.
-eof
-   exit
-}
-
 cleanup() {
    rm -f \
       $LAST_PATH \
@@ -100,9 +76,9 @@ bulk_move() {
 
 launch() {
    read -r FILE < "$LAUNCH_FILE_PATH"
-   execute "$FILE"
+   execute $FILE
    read -r LAST_DIR < "$LAST_PATH"
-   exec "$0" "$LAST_DIR"
+   $0 "$LAST_DIR"
 }
 
 change_root() {
@@ -111,37 +87,21 @@ change_root() {
    exec "$SHELL"
 }
 
-init_filters() {
-   [ -f "$FILTERS_PATH" ] ||
-      faint-fetch-config "$FILTERS" -k |
-      awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-            > "$FILTERS_PATH"
-}
-
 init_configs() {
    echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
    echo "$SHOW_HIDDEN" > $SHOW_HIDDEN_PATH
    echo "$USE_FILTERS" > $USE_FILTERS_PATH
-}
-
-init_paths() {
    echo "$PWD" > "$LAST_PATH"
-   [ -d "$DATA_PATH" ] || mkdir -p "$DATA_PATH"
-   [ -d "$TRASH_DIR" ] || mkdir -p "$TRASH_DIR"
 }
 
 process_args() {
    case $1 in
       -l) read -r DEST < "$FINAL_PATH" ;;
-      -h) help ;;
       *) DEST=$1 ;;
    esac
 }
 
 process_args "$@"
-init_paths
-init_filters
 init_configs
 
 trap 'change_root' RTMIN+1
@@ -150,5 +110,5 @@ trap 'bulk_move' RTMIN+3
 trap 'make_dir' RTMIN+4
 trap 'cleanup' INT TERM QUIT EXIT
 
-faint-explore "${DEST:-$PWD}" | fzf
+faint-explore "${DEST}" | fzf
 mv "$LAST_PATH" "$FINAL_PATH"

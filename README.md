@@ -31,7 +31,7 @@
 ## Dependencies
 
 -  [fzf](https://github.com/junegunn/fzf)
--  `find, sort, sed, pkill & awk`
+-  `find, diff, sort, sed, pkill & awk`
 -  `setsid` (Optional; For better launching experience)
 -  [hulk](https://github.com/salman-abedin/alfred/blob/master/src/hulk) (Optional; For bulk moving/renaming)
 
@@ -40,7 +40,7 @@
 #### Git
 
 ```sh
-git clone https://github.com/salman-abedin/faint.git && cd faint && sudo make install
+git clone https://github.com/salman-abedin/faint.git && cd faint && make && sudo make install
 ```
 
 #### AUR
@@ -102,8 +102,7 @@ yay -S --noconfirm faint-git # Nightly
 
 ### Modifications
 
--  Consult the `faint-config` for all your modifications need
--  `sudo make install` after making changes
+-  Consult the `~/.config/faintrc` for all your modifications need
 
 ## Update
 
@@ -112,6 +111,12 @@ yay -S --noconfirm faint-git # Nightly
 ```sh
 cd faint
 git pull rebase && sudo make install
+```
+
+#### AUR
+
+```sh
+yay -Syu --noconfirm
 ```
 
 ## Uninstallation

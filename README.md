@@ -16,9 +16,9 @@
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-launch.gif)
 
--  ### Filters
+-  ### Filters & Hidden Files
 
-![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-filters.gif)
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-filter.gif)
 
 -  ### Bookmarking
 

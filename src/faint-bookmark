@@ -2,9 +2,9 @@
 #
 # Helper script for faint. Helps jumping to favorite direcotories
 #
-# Dependencies: fzf, sed, faint-config & faint-fetch-config
+# Dependencies: fzf, sed, faintrc & faint-fetch-config
 
-. faint-config
+. faintrc
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

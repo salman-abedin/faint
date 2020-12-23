@@ -2,9 +2,9 @@
 #
 # Helper script for faint. Allows misc operations on files
 #
-# Dependencies: fzf, faint-config & faint-fetch-config
+# Dependencies: fzf, faintrc & faint-fetch-config
 
-. faint-config
+. faintrc
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

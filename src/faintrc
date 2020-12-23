@@ -2,7 +2,7 @@
 #
 # Config file for faint
 #
-# Dependencies: setsid (Optional; For better launching experience)
+# Dependencies: pkill, setsid (Optional; For better launching experience)
 
 #===============================================================================
 #                             Default Settings
@@ -53,7 +53,7 @@ KEY_DEPTH_RESET="_"
 #===============================================================================
 
 #----------------------------------------------
-# <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
+# Format: <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
 #----------------------------------------------
 FILTERS="\
 node_modules;
@@ -68,6 +68,15 @@ Makefile;
 #                             Operations
 #===============================================================================
 
+#---------------------------------------
+# Operation Functions
+#---------------------------------------
+# Variable Conventions
+#     FILE_ARGS      = Files selected for operation
+#     FILE_LIST      = Files tracked for consecutive operations
+#     FILE_LIST_PATH = PATH for tracking files
+#     LAST_DIR       = Current path
+
 trash() { echo "$FILE_ARGS" | while read -r file; do mv -f "$file" "$TRASH_DIR"; done; }
 delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
 yank() {
@@ -77,7 +86,7 @@ yank() {
 paste() {
    echo "$FILE_LIST" |
       while read -r file; do
-         cp -br "$file" "$LAST_DIR"
+         cp -r "$file" "$LAST_DIR" || cp -r "$file" "$file~"
       done
 }
 move() {
@@ -89,6 +98,9 @@ move() {
 bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 
+#-----------------------------------------------
+# Format: <OPERATION_NAME>:<OPERATION_FUNCTION>;
+#-----------------------------------------------
 OPS="\
 ⚔  Trash:trash;
 ❌ Delete:delete;
@@ -119,6 +131,9 @@ execute() {
 #                               Icons
 #===============================================================================
 
+#---------------------------------------
+# Format: <EXT_1|EXT_2|...>:<ICON>;
+#---------------------------------------
 ICONS="\
 DIR:📁;
 FILE:📃;

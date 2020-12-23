@@ -4,7 +4,7 @@ DIR_DATA = ~/.local/share/faint
 CONFIG = ~/.config/faintrc
 init:
 	@mkdir -p $(DIR_DATA)
-	@[ -f $(CONFIG) ] || { cp src/faint-config $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
+	@[ -f $(CONFIG) ] || { cp src/faintrc $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
 	@echo Done initiating configs.
 install:
 	@mkdir -p $(DIR_BIN)

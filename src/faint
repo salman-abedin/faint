@@ -3,7 +3,7 @@
 # A fuzzy file explorer
 #
 # Dpendencies:
-#              fzf, diff, sed, awk,faint-launch, faint-config,
+#              fzf, diff, sed, awk,faint-launch, faintrc
 #              faint-fetch-config, faint-explore, faint-bookmark & faint-operate
 #              vidir (Optional)
 #
@@ -12,7 +12,7 @@
 #        faint -l (explores the last visited directory)
 #        faint -h (shows help)
 
-. faint-config
+. faintrc
 
 CONFIG=$HOME/.config/faintrc
 CONFIG_REF=/tmp/FAINT_CONFIG_REF

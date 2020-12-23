@@ -2,9 +2,9 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, sort, pkill, faint-launch, faint-config & faint-fetch-config
+# Dependencie: find, sort, pkill, faint-launch, faintrc & faint-fetch-config
 
-. faint-config
+. faintrc
 
 format() {
    while read -r file; do

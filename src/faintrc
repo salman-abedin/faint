@@ -119,11 +119,12 @@ OPS="\
 fork() { setsid -f "$@" > /dev/null 2>&1 & }
 
 execute() {
-   case ${1##*.} in
+   FILE=$*
+   case ${FILE##*.} in
       # <EXT1> | <EXT2 | ...) <CMD> "$1";;
-      mp4 | mkv | gif) fork mpv "$1" ;;
+      mp4 | mkv | gif) fork mpv "$FILE" ;;
       # default
-      *) $EDITOR "$1" ;;
+      *) $EDITOR "$FILE" ;;
    esac
 }
 

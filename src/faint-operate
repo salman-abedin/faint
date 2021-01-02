@@ -4,7 +4,7 @@
 #
 # Dependencies: fzf, faintrc & faint-fetch-config
 
-. faintrc
+. /etc/faintrc
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS

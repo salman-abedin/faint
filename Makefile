@@ -7,6 +7,7 @@ init:
 	@[ -f $(CONFIG) ] || { cp src/faintrc $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
 	@echo Done initiating configs.
 install:
+	@cp faintrc /etc
 	@mkdir -p $(DIR_BIN)
 	@for script in src/*; do \
 		cp -f $$script $(DIR_BIN); \

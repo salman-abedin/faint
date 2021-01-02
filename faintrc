@@ -116,7 +116,7 @@ OPS="\
 #===============================================================================
 
 # Helper function: Forks & suppresses the output of a given commmand
-fork() { setsid -f "$@" > /dev/null 2>&1 & }
+fork() { setsid -f "$@" > /dev/null 2>&1; }
 
 execute() {
    FILE=$*

@@ -12,7 +12,7 @@
 #        faint -l (explores the last visited directory)
 #        faint -h (shows help)
 
-. faintrc
+. /etc/faintrc
 
 CONFIG=$HOME/.config/faintrc
 CONFIG_REF=/tmp/FAINT_CONFIG_REF

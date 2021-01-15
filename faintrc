@@ -95,6 +95,13 @@ move() {
          mv -f "$file" "$LAST_DIR"
       done
 }
+compress() {
+   echo "$FILE_ARGS" |
+      while read -r file; do
+         tar cvzf "compressed.tar" "$file"
+      done
+}
+
 bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 
@@ -109,6 +116,7 @@ OPS="\
 🚚 Move:move;
 🏷  Rename:bulk_move;
 📁 Create Directory:make_dir;
+♦  Compress:compress;
 "
 
 #===============================================================================

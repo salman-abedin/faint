@@ -14,6 +14,7 @@ MAX_DEPTH=1
 
 MARGIN_TOP_BOTTOM=10 # 0 - 49
 MARGIN_LEFT_RIGHT=20 # 0 - 49
+BORDER=rounded # rounded | sharp | horizontal | vertical | top | bottom | left | right
 
 TRASH_DIR=~/.local/share/Trash
 

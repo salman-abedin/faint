@@ -4,8 +4,8 @@ DIR_DATA = ~/.local/share/faint
 CONFIG = ~/.config/faintrc
 init:
 	@mkdir -p $(DIR_DATA)
-	@[ -f $(CONFIG) ] || { cp src/faintrc $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
-	@echo Done initiating configs.
+	@[ -f $(CONFIG) ] || { cp faintrc $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
+	@echo Initiation finished.
 install:
 	@cp faintrc /etc
 	@mkdir -p $(DIR_BIN)
@@ -13,9 +13,8 @@ install:
 		cp -f $$script $(DIR_BIN); \
 		chmod 755 $(DIR_BIN)/$${script#src/}; \
 		done
-	@echo Done installing the executable files.
+	@echo Installation finished.
 uninstall:
-	@for script in src/*;do rm -f $(DIR_BIN)/$${script#src/}; done
-	@rm -fr $(DIR_DATA) $(CONFIG)
-	@echo Done removing executable files.
+	@for script in src/*; do rm -f $(DIR_BIN)/$${script#src/}; done
+	@echo Uninstallation finished.
 .PHONY: init install uninstall

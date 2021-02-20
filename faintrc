@@ -14,7 +14,7 @@ MAX_DEPTH=1
 
 MARGIN_TOP_BOTTOM=10 # 0 - 49
 MARGIN_LEFT_RIGHT=20 # 0 - 49
-BORDER=rounded # rounded | sharp | horizontal | vertical | top | bottom | left | right
+BORDER=rounded       # rounded | sharp | horizontal | vertical | top | bottom | left | right
 
 TRASH_DIR=~/.local/share/Trash
 
@@ -85,37 +85,43 @@ yank() {
    echo "$FILE_ARGS" | xsel -b 2> /dev/null
 }
 paste() {
-   echo "$FILE_LIST" |
-      while read -r file; do
+   echo "$FILE_LIST" \
+      | while read -r file; do
          cp -r "$file" "$LAST_DIR" || cp -r "$file" "$file~"
       done
 }
 move() {
-   echo "$FILE_LIST" |
-      while read -r file; do
+   echo "$FILE_LIST" \
+      | while read -r file; do
          mv -f "$file" "$LAST_DIR"
       done
 }
 compress() {
-   echo "$FILE_ARGS" |
-      while read -r file; do
+   echo "$FILE_ARGS" \
+      | while read -r file; do
          tar cvzf "compressed.tar" "$file"
       done
 }
 
-bulk_move() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
+hulk() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
+rename() {
+   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+   kill -39 "$FAINT_PID"
+   pkill -P "$FAINT_PID"
+}
 
 #-----------------------------------------------
 # Format: <OPERATION_NAME>:<OPERATION_FUNCTION>;
 #-----------------------------------------------
 OPS="\
+🏷  Rename:rename;
 ⚔  Trash:trash;
 ❌ Delete:delete;
 ©  Yank:yank;
 🖌  Paste:paste;
 🚚 Move:move;
-🏷  Rename:bulk_move;
+😠 Hulk:hulk;
 📁 Create Directory:make_dir;
 ♦  Compress:compress;
 "

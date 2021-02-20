@@ -73,6 +73,14 @@ cleanup() {
    mv "$LAST_PATH" "$FINAL_PATH"
 }
 
+rename() {
+   read -r FILE < "$FILE_LIST_PATH"
+   echo "Rename ${FILE##*/} to ..."
+   read -r NAME
+   mv -f "$FILE" "${FILE%/*}/$NAME"
+   exec "$0" "$LAST_DIR"
+}
+
 make_dir() {
    echo What it is called?
    read -r NAME
@@ -101,9 +109,9 @@ change_root() {
 init_filters() {
    if ! diff -q "$CONFIG" "$CONFIG_REF" > /dev/null 2>&1; then
       cp "$CONFIG" "$CONFIG_REF"
-      faint-fetch-config "$FILTERS" -k |
-         awk '{printf "%s\\|",$0;}' |
-         sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+      faint-fetch-config "$FILTERS" -k \
+         | awk '{printf "%s\\|",$0;}' \
+         | sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
             > "$FILTERS_PATH"
    fi
 }
@@ -122,6 +130,7 @@ process_args() {
    esac
 }
 
+tmux rename-window faint 2> /dev/null
 process_args "$@"
 init_filters
 init_configs
@@ -131,5 +140,6 @@ trap 'cleanup; change_root' RTMIN+1
 trap 'cleanup; launch' RTMIN+2
 trap 'cleanup; bulk_move' RTMIN+3
 trap 'cleanup; make_dir' RTMIN+4
+trap 'cleanup; rename' RTMIN+5
 
 faint-explore "${DEST}" | fzf

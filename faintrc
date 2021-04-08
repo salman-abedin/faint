@@ -57,12 +57,12 @@ KEY_DEPTH_RESET="_"
 # Format: <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
 #----------------------------------------------
 FILTERS="\
-node_modules;
-package-lock.json;
-yarn.lock;
-.git;
-LICENSE;
-Makefile;
+node_modules$;
+package-lock.json$;
+yarn.lock$;
+.git$;
+LICENSE$;
+Makefile$;
 "
 
 #===============================================================================
@@ -81,34 +81,34 @@ Makefile;
 trash() { echo "$FILE_ARGS" | while read -r file; do mv -f "$file" "$TRASH_DIR"; done; }
 delete() { echo "$FILE_ARGS" | while read -r file; do rm -fr "$file"; done; }
 yank() {
-   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
-   echo "$FILE_ARGS" | xsel -b 2> /dev/null
+  echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+  echo "$FILE_ARGS" | xsel -b 2> /dev/null
 }
 paste() {
-   echo "$FILE_LIST" \
-      | while read -r file; do
-         cp -r "$file" "$LAST_DIR" || cp -r "$file" "$file~"
-      done
+  echo "$FILE_LIST" \
+    | while read -r file; do
+      cp -r "$file" "$LAST_DIR" || cp -r "$file" "$file~"
+    done
 }
 move() {
-   echo "$FILE_LIST" \
-      | while read -r file; do
-         mv -f "$file" "$LAST_DIR"
-      done
+  echo "$FILE_LIST" \
+    | while read -r file; do
+      mv -f "$file" "$LAST_DIR"
+    done
 }
 compress() {
-   echo "$FILE_ARGS" \
-      | while read -r file; do
-         tar cvzf "compressed.tar" "$file"
-      done
+  echo "$FILE_ARGS" \
+    | while read -r file; do
+      tar cvzf "compressed.tar" "$file"
+    done
 }
 
 hulk() { kill -37 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 make_dir() { kill -38 "$FAINT_PID" && pkill -P "$FAINT_PID"; }
 rename() {
-   echo "$FILE_ARGS" > "$FILE_LIST_PATH"
-   kill -39 "$FAINT_PID"
-   pkill -P "$FAINT_PID"
+  echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+  kill -39 "$FAINT_PID"
+  pkill -P "$FAINT_PID"
 }
 
 #-----------------------------------------------
@@ -134,13 +134,13 @@ OPS="\
 fork() { setsid -f "$@" > /dev/null 2>&1; }
 
 execute() {
-   FILE=$*
-   case ${FILE##*.} in
-      # <EXT1> | <EXT2 | ...) <CMD> "$1";;
-      mp4 | mkv | gif) fork mpv "$FILE" ;;
-      # default
-      *) $EDITOR "$FILE" ;;
-   esac
+  FILE=$*
+  case ${FILE##*.} in
+    # <EXT1> | <EXT2 | ...) <CMD> "$1";;
+    mp4 | mkv | gif) fork mpv "$FILE" ;;
+    # default
+    *) $EDITOR "$FILE" ;;
+  esac
 }
 
 #===============================================================================

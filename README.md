@@ -4,36 +4,36 @@
 
 ## Features
 
--  ### Fuzzy Finding & Depth Searching.
+- ### Fuzzy Finding & Depth Searching.
 
-![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-fuzzy.gif)
+![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint.gif)
 
--  ### Custom Operations
+- ### Custom Operations
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-op.gif)
 
--  ### Custom Launch Behaviors
+- ### Custom Launch Behaviors
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-launch.gif)
 
--  ### Filters & Hidden Files
+- ### Filters & Hidden Files
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-filter.gif)
 
--  ### Bookmarking
+- ### Bookmarking
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-bookmark.gif)
 
--  ### Multiple Instances
+- ### Multiple Instances
 
 ![](https://gitlab.com/salman-abedin/assets/-/raw/master/faint-multi.gif)
 
 ## Dependencies
 
--  [fzf](https://github.com/junegunn/fzf)
--  `find, diff, sort, sed, pkill & awk`
--  `setsid` (Optional; For better launching experience)
--  [hulk](https://github.com/salman-abedin/alfred/blob/master/src/hulk) (Optional; For bulk moving/renaming)
+- [fzf](https://github.com/junegunn/fzf)
+- `find, diff, sort, sed, pkill & awk`
+- `setsid` (Optional; For better launching experience)
+- [hulk](https://github.com/salman-abedin/alfred/blob/master/src/hulk) (Optional; For bulk moving/renaming)
 
 ## Installation
 
@@ -102,7 +102,7 @@ yay -S --noconfirm faint-git # Nightly
 
 ### Modifications
 
--  Consult the `~/.config/faintrc` for all your modifications need
+- Consult the `~/.config/faintrc` for all your modifications need
 
 ## Update
 
@@ -128,8 +128,8 @@ sudo make uninstall
 
 ## Contributors
 
--  [orhun](https://github.com/orhun) ( AUR package maintainer)
--  [NICHOLAS85](https://github.com/NICHOLAS85)
+- [orhun](https://github.com/orhun) ( AUR package maintainer)
+- [NICHOLAS85](https://github.com/NICHOLAS85)
 
 ---
 

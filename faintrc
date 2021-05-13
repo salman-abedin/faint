@@ -57,10 +57,10 @@ KEY_DEPTH_RESET="_"
 # Format: <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
 #----------------------------------------------
 FILTERS="\
-node_modules$;
+node_modules*;
+.git*;
 package-lock.json$;
 yarn.lock$;
-.git$;
 LICENSE$;
 Makefile$;
 "

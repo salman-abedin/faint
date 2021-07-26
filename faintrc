@@ -110,12 +110,18 @@ rename() {
   kill -39 "$FAINT_PID"
   pkill -P "$FAINT_PID"
 }
+duplicate() {
+  echo "$FILE_ARGS" > "$FILE_LIST_PATH"
+  kill -40 "$FAINT_PID"
+  pkill -P "$FAINT_PID"
+}
 
 #-----------------------------------------------
 # Format: <OPERATION_NAME>:<OPERATION_FUNCTION>;
 #-----------------------------------------------
 OPS="\
 🏷  Rename:rename;
+💕 Duplicate:duplicate;
 ⚔  Trash:trash;
 ❌ Delete:delete;
 ©  Yank:yank;

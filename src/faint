@@ -73,6 +73,16 @@ cleanup() {
   mv "$LAST_PATH" "$FINAL_PATH"
 }
 
+duplicate() {
+  read -r FILE < "$FILE_LIST_PATH"
+  FILE_BASE=${FILE##*/}
+  echo "Duplicate $FILE_BASE to ..."
+  xdotool type ${FILE_BASE%.*}
+  read -r NAME
+  cp "$FILE" "${FILE%/*}/$NAME"
+  exec "$0" "$LAST_DIR"
+}
+
 rename() {
   read -r FILE < "$FILE_LIST_PATH"
   FILE_BASE=${FILE##*/}
@@ -143,5 +153,6 @@ trap 'cleanup; launch' RTMIN+2
 trap 'cleanup; bulk_move' RTMIN+3
 trap 'cleanup; make_dir' RTMIN+4
 trap 'cleanup; rename' RTMIN+5
+trap 'cleanup; duplicate' RTMIN+6
 
 faint-explore "${DEST}" | fzf

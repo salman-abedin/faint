@@ -24,7 +24,6 @@ TRASH_DIR=~/.local/share/Trash
 
 KEY_LAUNCH=';'
 KEY_RUN=':'
-KEY_BACK=','
 KEY_OPERATE='space'
 KEY_QUIT='esc'
 

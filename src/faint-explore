@@ -7,102 +7,107 @@
 . /etc/faintrc
 
 format() {
-   while read -r file; do
-      [ "$file" = . ] && continue
-      if [ -d "$file" ]; then
-         PREFIX=$(faint-fetch-config "$ICONS" -v DIR)
-      elif [ -L "$file" ]; then
-         PREFIX=$(faint-fetch-config "$ICONS" -v LINK)
+  while read -r file; do
+    if [ "$file" = . ]; then
+      PREFIX=$(faint-fetch-config "$ICONS" -v DIR)
+      echo "$PREFIX ${file#./}."
+      continue
+    fi
+
+    if [ -d "$file" ]; then
+      PREFIX=$(faint-fetch-config "$ICONS" -v DIR)
+    elif [ -L "$file" ]; then
+      PREFIX=$(faint-fetch-config "$ICONS" -v LINK)
+    else
+      ICON=$(faint-fetch-config "$ICONS" -v "${file##*.}")
+      if [ -n "$ICON" ]; then
+        PREFIX=$ICON
       else
-         ICON=$(faint-fetch-config "$ICONS" -v "${file##*.}")
-         if [ -n "$ICON" ]; then
-            PREFIX=$ICON
-         else
-            PREFIX=$(faint-fetch-config "$ICONS" -v FILE)
-         fi
+        PREFIX=$(faint-fetch-config "$ICONS" -v FILE)
       fi
-      echo "$PREFIX ${file#./}"
-   done
+    fi
+    echo "$PREFIX ${file#./}"
+  done
 }
 
 list() {
-   find . -maxdepth "$MAX_DEPTH_STAT" -name "$NAMES" \
-      ! -regex ".*\($FILTERS\).*" |
-      sort
+  find . -maxdepth "$MAX_DEPTH_STAT" -name "$NAMES" \
+    ! -regex ".*\($FILTERS\).*" \
+    | sort
 }
 
 change_last_path() { echo "$PWD" > "$LAST_PATH"; }
 
 set_hidden_stat() {
-   if [ "$SHOW_HIDDEN_STAT" = 1 ]; then
-      NAMES="*"
-   else
-      NAMES="[!.]*"
-   fi
+  if [ "$SHOW_HIDDEN_STAT" = 1 ]; then
+    NAMES="*"
+  else
+    NAMES="[!.]*"
+  fi
 }
 
 set_filters() {
-   if [ "$USE_FILTERS_STAT" = 1 ]; then
-      read -r FILTERS < "$FILTERS_PATH"
-   else
-      FILTERS=" "
-   fi
+  if [ "$USE_FILTERS_STAT" = 1 ]; then
+    read -r FILTERS < "$FILTERS_PATH"
+  else
+    FILTERS=" "
+  fi
 }
 
 process_args() {
-   read -r LAST_DIR < "$LAST_PATH"
-   case $1 in
-      -b)
-         DIR="${LAST_DIR%/*}"
-         if [ -n "$DIR" ]; then
-            cd "$DIR" || exit 1
-         else
-            cd / || exit 1
-         fi
-         ;;
-      -r) cd "$LAST_DIR" || exit 1 ;;
-      -t)
-         shift
-         case $1 in
-            filters)
-               USE_FILTERS_STAT=$((USE_FILTERS_STAT == 1 ? 0 : 1))
-               echo "$USE_FILTERS_STAT" > "$USE_FILTERS_PATH"
-               ;;
-            hidden)
-               SHOW_HIDDEN_STAT=$((SHOW_HIDDEN_STAT == 1 ? 0 : 1))
-               echo "$SHOW_HIDDEN_STAT" > "$SHOW_HIDDEN_PATH"
-               ;;
-         esac
-         cd "$LAST_DIR" || exit 1
-         ;;
-      -d)
-         shift
-         case $1 in
-            plus) MAX_DEPTH_STAT=$((MAX_DEPTH_STAT + 1)) ;;
-            minus) MAX_DEPTH_STAT=$((MAX_DEPTH_STAT - 1 < 1 ? 1 : MAX_DEPTH_STAT - 1)) ;;
-            reset) MAX_DEPTH_STAT=$MAX_DEPTH ;;
-         esac
-         echo "$MAX_DEPTH_STAT" > "$MAX_DEPTH_PATH"
-         cd "$LAST_DIR" || exit 1
-         ;;
-      -c)
-         shift
-         NEW_DIR=${1#* }
-         if [ "$LAST_DIR" = / ]; then
-            DEST=$LAST_DIR$NEW_DIR
-         else
-            DEST=$LAST_DIR/$NEW_DIR
-         fi
-         if ! cd "$DEST"; then
-            echo "$DEST" > "$LAUNCH_FILE_PATH"
-            kill -36 "$FAINT_PID"
-            pkill -P "$FAINT_PID"
-            cd "$LAST_DIR" || exit 1
-         fi
-         ;;
-      -l) execute "$LAST_DIR/${2#* }" && exit 0 ;;
-      *) cd "$1" || exit 1 ;;
-   esac
+  read -r LAST_DIR < "$LAST_PATH"
+  case $1 in
+    -b)
+      DIR="${LAST_DIR%/*}"
+      if [ -n "$DIR" ]; then
+        cd "$DIR" || exit 1
+      else
+        cd / || exit 1
+      fi
+      ;;
+    -r) cd "$LAST_DIR" || exit 1 ;;
+    -t)
+      shift
+      case $1 in
+        filters)
+          USE_FILTERS_STAT=$((USE_FILTERS_STAT == 1 ? 0 : 1))
+          echo "$USE_FILTERS_STAT" > "$USE_FILTERS_PATH"
+          ;;
+        hidden)
+          SHOW_HIDDEN_STAT=$((SHOW_HIDDEN_STAT == 1 ? 0 : 1))
+          echo "$SHOW_HIDDEN_STAT" > "$SHOW_HIDDEN_PATH"
+          ;;
+      esac
+      cd "$LAST_DIR" || exit 1
+      ;;
+    -d)
+      shift
+      case $1 in
+        plus) MAX_DEPTH_STAT=$((MAX_DEPTH_STAT + 1)) ;;
+        minus) MAX_DEPTH_STAT=$((MAX_DEPTH_STAT - 1 < 1 ? 1 : MAX_DEPTH_STAT - 1)) ;;
+        reset) MAX_DEPTH_STAT=$MAX_DEPTH ;;
+      esac
+      echo "$MAX_DEPTH_STAT" > "$MAX_DEPTH_PATH"
+      cd "$LAST_DIR" || exit 1
+      ;;
+    -c)
+      shift
+      NEW_DIR=${1#* }
+      if [ "$LAST_DIR" = / ]; then
+        DEST=$LAST_DIR$NEW_DIR
+      else
+        DEST=$LAST_DIR/$NEW_DIR
+      fi
+      if ! cd "$DEST"; then
+        echo "$DEST" > "$LAUNCH_FILE_PATH"
+        kill -36 "$FAINT_PID"
+        pkill -P "$FAINT_PID"
+        cd "$LAST_DIR" || exit 1
+      fi
+      ;;
+    -l) execute "$LAST_DIR/${2#* }" && exit 0 ;;
+    *) cd "$1" || exit 1 ;;
+  esac
 }
 
 read -r USE_FILTERS_STAT < "$USE_FILTERS_PATH"

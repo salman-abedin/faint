@@ -1,5 +1,5 @@
 .POSIX:
-DIR_BIN = /usr/local/bin
+DIR_BIN = ~/.local/bin
 DIR_DATA = ~/.local/share/faint
 CONFIG = ~/.config/faintrc
 init:
@@ -7,7 +7,7 @@ init:
 	@[ -f $(CONFIG) ] || { cp faintrc $(CONFIG) && sed -i '/config\/faintrc/d' $(CONFIG); }
 	@echo Initiation finished.
 install:
-	@cp faintrc /etc
+	@cp faintrc $(DIR_DATA)
 	@mkdir -p $(DIR_BIN)
 	@for script in src/*; do \
 		cp -f $$script $(DIR_BIN); \

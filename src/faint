@@ -12,7 +12,7 @@
 #        faint -l (explores the last visited directory)
 #        faint -h (shows help)
 
-. /etc/faintrc
+. "$HOME"/.local/share/faint/faintrc
 
 CONFIG=$HOME/.config/faintrc
 CONFIG_REF=/tmp/FAINT_CONFIG_REF
@@ -65,81 +65,81 @@ export FILE_LIST_PATH=/tmp/FAINT_FILE_LIST
 LAST_DIR=
 
 cleanup() {
-  rm -f \
-    $MAX_DEPTH_PATH \
-    $SHOW_HIDDEN_PATH \
-    $USE_FILTERS_PATH
-  read -r LAST_DIR < "$LAST_PATH"
-  mv "$LAST_PATH" "$FINAL_PATH"
+    rm -f \
+        $MAX_DEPTH_PATH \
+        $SHOW_HIDDEN_PATH \
+        $USE_FILTERS_PATH
+    read -r LAST_DIR < "$LAST_PATH"
+    mv "$LAST_PATH" "$FINAL_PATH"
 }
 
 duplicate() {
-  read -r FILE < "$FILE_LIST_PATH"
-  FILE_BASE=${FILE##*/}
-  echo "Duplicate $FILE_BASE to ..."
-  xdotool type ${FILE_BASE%.*}
-  read -r NAME
-  cp "$FILE" "${FILE%/*}/$NAME"
-  exec "$0" "$LAST_DIR"
+    read -r FILE < "$FILE_LIST_PATH"
+    FILE_BASE=${FILE##*/}
+    echo "Duplicate $FILE_BASE to ..."
+    xdotool type ${FILE_BASE%.*}
+    read -r NAME
+    cp "$FILE" "${FILE%/*}/$NAME"
+    exec "$0" "$LAST_DIR"
 }
 
 rename() {
-  read -r FILE < "$FILE_LIST_PATH"
-  FILE_BASE=${FILE##*/}
-  echo "Rename $FILE_BASE to ..."
-  xdotool type ${FILE_BASE%.*}
-  read -r NAME
-  mv -f "$FILE" "${FILE%/*}/$NAME"
-  exec "$0" "$LAST_DIR"
+    read -r FILE < "$FILE_LIST_PATH"
+    FILE_BASE=${FILE##*/}
+    echo "Rename $FILE_BASE to ..."
+    xdotool type ${FILE_BASE%.*}
+    read -r NAME
+    mv -f "$FILE" "${FILE%/*}/$NAME"
+    exec "$0" "$LAST_DIR"
 }
 
 make_dir() {
-  echo What it is called?
-  read -r NAME
-  mkdir -p "$LAST_DIR/$NAME"
-  cd "$LAST_DIR/$NAME" || exit 1
-  : > "$LAST_DIR/$NAME/delete_me_afterwards"
-  exec "$0" "$LAST_DIR/$NAME"
+    echo What it is called?
+    read -r NAME
+    mkdir -p "$LAST_DIR/$NAME"
+    cd "$LAST_DIR/$NAME" || exit 1
+    : > "$LAST_DIR/$NAME/delete_me_afterwards"
+    exec "$0" "$LAST_DIR/$NAME"
 }
 
 bulk_move() {
-  /usr/local/bin/hulk "$LAST_DIR"
-  exec "$0" "$LAST_DIR"
+    /usr/local/bin/hulk "$LAST_DIR"
+    exec "$0" "$LAST_DIR"
 }
 
 launch() {
-  read -r FILE < "$LAUNCH_FILE_PATH"
-  execute $FILE
-  $0 "$LAST_DIR"
+    read -r FILE < "$LAUNCH_FILE_PATH"
+    execute $FILE
+    $0 "$LAST_DIR"
 }
 
 change_root() {
-  cd "$LAST_DIR" || exit 1
-  exec "$SHELL"
+    cd "$LAST_DIR" || exit 1
+    exec "$SHELL"
 }
 
 init_filters() {
-  if ! diff -q "$CONFIG" "$CONFIG_REF" > /dev/null 2>&1; then
-    cp "$CONFIG" "$CONFIG_REF"
-    faint-fetch-config "$FILTERS" -k \
-      | awk '{printf "%s\\|",$0;}' \
-      | sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
-        > "$FILTERS_PATH"
-  fi
+    if ! diff -q "$CONFIG" "$CONFIG_REF" > /dev/null 2>&1; then
+        cp "$CONFIG" "$CONFIG_REF"
+        faint-fetch-config "$FILTERS" -k \
+            | awk '{printf "%s\\|",$0;}' \
+            | sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
+                > "$FILTERS_PATH"
+    fi
 }
 
 init_configs() {
-  echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
-  echo "$SHOW_HIDDEN" > $SHOW_HIDDEN_PATH
-  echo "$USE_FILTERS" > $USE_FILTERS_PATH
-  echo "$PWD" > "$LAST_PATH"
+    echo "$MAX_DEPTH" > $MAX_DEPTH_PATH
+    echo "$SHOW_HIDDEN" > $SHOW_HIDDEN_PATH
+    echo "$USE_FILTERS" > $USE_FILTERS_PATH
+    echo "$PWD" > "$LAST_PATH"
 }
 
 process_args() {
-  case $1 in
-    -l) read -r DEST < "$FINAL_PATH" ;;
-    *) DEST=$1 ;;
-  esac
+    case $1 in
+        -l) read -r DEST < "$FINAL_PATH" ;;
+        *) DEST=$1 ;;
+    esac
 }
 
 tmux rename-window faint 2> /dev/null

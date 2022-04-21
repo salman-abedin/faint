@@ -4,7 +4,7 @@
 #
 # Dependencies: fzf, faintrc & faint-fetch-config
 
-. /etc/faintrc
+. "$HOME"/.local/share/faint/faintrc
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -15,18 +15,18 @@ export FZF_DEFAULT_OPTS="\
 read -r LAST_DIR < "$LAST_PATH"
 
 FILE_ARGS=$(
-   for file in "$@"; do
-      echo "$LAST_DIR/${file#* }"
-   done
+    for file in "$@"; do
+        echo "$LAST_DIR/${file#* }"
+    done
 )
 
-[ -f "$FILE_LIST_PATH" ] &&
-   FILE_LIST=$(
-      while read -r file; do
-         echo "$file"
-      done < "$FILE_LIST_PATH"
-   )
+[ -f "$FILE_LIST_PATH" ] \
+    && FILE_LIST=$(
+        while read -r file; do
+            echo "$file"
+        done < "$FILE_LIST_PATH"
+    )
 
-CHOICE=$(faint-fetch-config "$OPS" -k | fzf) &&
-   CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") &&
-   $CMD 2> /dev/null
+CHOICE=$(faint-fetch-config "$OPS" -k | fzf) \
+    && CMD=$(faint-fetch-config "$OPS" -v "${CHOICE#* }") \
+    && $CMD 2> /dev/null

@@ -4,7 +4,7 @@
 #
 # Dependencies: fzf, sed, faintrc & faint-fetch-config
 
-. /etc/faintrc
+. "$HOME"/.local/share/faint/faintrc
 
 export FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
@@ -16,21 +16,21 @@ export FZF_DEFAULT_OPTS="\
 read -r LAST_DIR < "$LAST_PATH"
 
 case $1 in
-   -a) echo "$LAST_DIR" >> "$BOOKMARKS_PATH" ;;
-   -r)
-      PATH_STRING=$(echo "$2" | sed 's/\//\\&/g')
-      sed -i "0,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
-      ;;
-   -b)
-      BOOKMARKS=$(
-         [ -f "$BOOKMARKS_PATH" ] &&
-            while read -r bookmark; do
-               echo "$bookmark"
-            done < "$BOOKMARKS_PATH"
-      )
-      CHOICE=$(
-         echo "$BOOKMARKS" | fzf
-      ) &&
-         echo "$CHOICE" > "$LAST_PATH"
-      ;;
+    -a) echo "$LAST_DIR" >> "$BOOKMARKS_PATH" ;;
+    -r)
+        PATH_STRING=$(echo "$2" | sed 's/\//\\&/g')
+        sed -i "0,/$PATH_STRING/{/$PATH_STRING/d;}" "$BOOKMARKS_PATH"
+        ;;
+    -b)
+        BOOKMARKS=$(
+            [ -f "$BOOKMARKS_PATH" ] \
+                && while read -r bookmark; do
+                    echo "$bookmark"
+                done < "$BOOKMARKS_PATH"
+        )
+        CHOICE=$(
+            echo "$BOOKMARKS" | fzf
+        ) \
+            && echo "$CHOICE" > "$LAST_PATH"
+        ;;
 esac

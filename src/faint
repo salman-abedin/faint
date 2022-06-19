@@ -22,7 +22,7 @@ export FILTERS_PATH=$DATA_PATH/FAINT_FILTERS
 export BOOKMARKS_PATH=$DATA_PATH/FAINT_BOOKMARKS
 
 export FAINT_PID=$$
-export FZF_DEFAULT_OPTS="\
+FZF_DEFAULT_OPTS="\
    $FZF_DEFAULT_OPTS
    --reverse --border $BORDER --no-info --margin $MARGIN_TOP_BOTTOM%,$MARGIN_LEFT_RIGHT% --no-color --header ''
    --multi --cycle

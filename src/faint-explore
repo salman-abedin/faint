@@ -28,7 +28,8 @@ format() {
 list() {
     find . -maxdepth "$MAX_DEPTH_STAT" -name "$NAMES" \
         ! -regex ".*\($FILTERS\).*" \
-        | sort
+        | sort \
+        | sed -e "1 i $PWD.pwd"
 }
 
 change_last_path() { echo "$PWD" > "$LAST_PATH"; }

@@ -157,6 +157,7 @@ execute() {
 # Format: <EXT_1|EXT_2|...>:<ICON>;
 #---------------------------------------
 ICONS="\
+pwd:🏠;
 DIR:📁;
 FILE:📃;
 LINK:⛓;

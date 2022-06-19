@@ -29,7 +29,6 @@ export FZF_DEFAULT_OPTS="\
    --bind \"$KEY_QUIT:cancel\"
    --bind \"$KEY_OPERATE:execute(faint-operate {+})+reload(faint-explore -r)+clear-query+top\"
    --bind \"$KEY_BACK:reload(faint-explore -b)+clear-query+top\"
-   --bind \"$KEY_SHELL:abort+execute(kill -35 $$)\"
 
    --bind \"$KEY_UP:up\"
    --bind \"$KEY_DOWN:down\"
@@ -121,11 +120,6 @@ launch() {
     read -r FILE < "$LAUNCH_FILE_PATH"
     execute $FILE
     $0 "$LAST_DIR"
-}
-
-change_root() {
-    cd "$LAST_DIR" || exit 1
-    exec "$SHELL"
 }
 
 init_filters() {

@@ -60,6 +60,17 @@ yay -S --noconfirm faint-git # Nightly
 | `faint <PATH>` | Explore specified directory    |
 | `faint -l`     | Explore last visited directory |
 
+## Functions
+
+```sh
+# Leaves on the last visited directory (Recommended as default)
+faint(){
+    faint
+    read -r faint_last_dir < ~/.local/share/faint/FAINT_FINAL
+    cd "$faint_last_dir" || exit
+}
+```
+
 ## Default Bindings
 
 ### Navigation

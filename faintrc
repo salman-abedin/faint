@@ -87,7 +87,7 @@ yank() {
 paste() {
   echo "$FILE_LIST" \
     | while read -r file; do
-      cp -r "$file" "$LAST_DIR" || cp -r "$file" "$file~"
+      cp -ir "$file" "$LAST_DIR" || cp -ir "$file" "$file~"
     done
 }
 move() {

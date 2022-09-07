@@ -126,7 +126,7 @@ init_filters() {
     if ! diff -q "$CONFIG" "$CONFIG_REF" > /dev/null 2>&1; then
         cp "$CONFIG" "$CONFIG_REF"
         faint-fetch-config "$FILTERS" -k \
-            | awk '{printf "%s\\|",$0;}' \
+            | awk '{printf "%s,",$0;}' \
             | sed -e 's/|\./|\\./g' -e 's/\\|$//g' \
                 > "$FILTERS_PATH"
     fi

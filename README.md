@@ -31,8 +31,9 @@
 ## Dependencies
 
 - [fzf](https://github.com/junegunn/fzf)
+- [fd](https://github.com/sharkdp/fd)
 - [xdotool](https://github.com/jordansissel/xdotool)
-- `find, diff, sort, sed, pkill & awk`
+- `diff, sort, sed, pkill & awk`
 - `setsid` (Optional; For better launching experience)
 - [hulk](https://github.com/salman-abedin/alfred/blob/master/src/hulk) (Optional; For bulk moving/renaming)
 

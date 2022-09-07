@@ -2,7 +2,7 @@
 #
 # Helper script for faint; lists file and formats the view
 #
-# Dependencie: find, sort, pkill, faint-launch, faintrc & faint-fetch-config
+# Dependencie: fd, sort, pkill, faint-launch, faintrc & faint-fetch-config
 
 . "$HOME"/.local/share/faint/faintrc
 
@@ -26,8 +26,7 @@ format() {
 }
 
 list() {
-    find . -maxdepth "$MAX_DEPTH_STAT" -name "$NAMES" \
-        ! -regex ".*\($FILTERS\).*" \
+    fd . -d "$MAX_DEPTH_STAT" "$NAMES" -E "*{$FILTERS}*" \
         | sort \
         | sed -e "1 i $PWD.pwd"
 }
@@ -36,9 +35,9 @@ change_last_path() { echo "$PWD" > "$LAST_PATH"; }
 
 set_hidden_stat() {
     if [ "$SHOW_HIDDEN_STAT" = 1 ]; then
-        NAMES="*"
+        NAMES="-H"
     else
-        NAMES="[!.]*"
+        NAMES=""
     fi
 }
 

@@ -54,15 +54,15 @@ KEY_DEPTH_RESET="_"
 #===============================================================================
 
 #----------------------------------------------
-# Format: <FILE>/<FOLDER; ( ⁉  No Sapces between lines )
+# Format: <FILE_NAME>/<FOLDER_NAME>; ( ⁉  No Sapces between lines )
 #----------------------------------------------
 FILTERS="\
-node_modules*;
-.git*;
-package-lock.json$;
-yarn.lock$;
-LICENSE$;
-Makefile$;
+node_modules;
+.git;
+package-lock.json;
+yarn.lock;
+LICENSE;
+Makefile;
 "
 
 #===============================================================================
